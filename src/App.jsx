@@ -1,0 +1,72 @@
+import React, { useState } from 'react';
+import { ThemeProvider } from './context/ThemeContext';
+import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
+import { InventoryProvider } from './context/InventoryContext';
+
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import FeaturedSection from './components/FeaturedSection';
+import MenuSection from './components/MenuSection';
+import CustomCoffeeBuilder from './components/CustomCoffeeBuilder';
+import AboutSection from './components/AboutSection';
+import ReviewsSection from './components/ReviewsSection';
+import GallerySection from './components/GallerySection';
+import ContactSection from './components/ContactSection';
+import Chatbot from './components/Chatbot';
+import CartDrawer from './components/CartDrawer';
+import CheckoutModal from './components/CheckoutModal';
+import ReservationModal from './components/ReservationModal';
+import AuthModal from './components/AuthModal';
+import AdminInventoryModal from './components/AdminInventoryModal';
+import ToastNotification from './components/ToastNotification';
+import Footer from './components/Footer';
+
+export default function App() {
+  const [isReservationOpen, setIsReservationOpen] = useState(false);
+
+  return (
+    <ThemeProvider>
+      <CartProvider>
+        <AuthProvider>
+          <InventoryProvider>
+            
+            <div className="min-h-screen relative flex flex-col font-sans">
+              <Navbar onOpenReservation={() => setIsReservationOpen(true)} />
+              
+              <main className="flex-grow">
+                <Hero onOpenReservation={() => setIsReservationOpen(true)} />
+                <FeaturedSection />
+                <MenuSection />
+                <CustomCoffeeBuilder />
+                <AboutSection />
+                <ReviewsSection />
+                <GallerySection />
+                <ContactSection onOpenReservation={() => setIsReservationOpen(true)} />
+              </main>
+
+              <Footer />
+
+              {/* Interactive Floating Chatbot */}
+              <Chatbot />
+
+              {/* Modals & Drawers */}
+              <CartDrawer />
+              <CheckoutModal />
+              <ReservationModal
+                isOpen={isReservationOpen}
+                onClose={() => setIsReservationOpen(false)}
+              />
+              <AuthModal />
+              <AdminInventoryModal />
+
+              {/* Toast Notification System */}
+              <ToastNotification />
+            </div>
+
+          </InventoryProvider>
+        </AuthProvider>
+      </CartProvider>
+    </ThemeProvider>
+  );
+}
