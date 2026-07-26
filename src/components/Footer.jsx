@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
-import { Coffee, Mail, Instagram, Facebook, Twitter, Heart } from 'lucide-react';
+import { Coffee, Mail, Instagram, Facebook, Twitter, Heart, ArrowUp } from 'lucide-react';
 
 export default function Footer() {
   const { addToast } = useCart();
@@ -95,6 +95,15 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-[#E5DCD3] dark:border-coffee-900 text-center text-xs text-[#855E4C] dark:text-coffee-400 flex flex-col sm:flex-row items-center justify-between gap-4 font-semibold">
           <p>© {new Date().getFullYear()} Oak & Bean Inc. All rights reserved.</p>
+          
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#2C1A14] dark:bg-[#C67C4E] hover:opacity-90 text-white dark:text-[#160F0B] font-extrabold text-xs uppercase tracking-wider shadow-sm transition"
+          >
+            <span>Back to Top</span>
+            <ArrowUp className="w-3.5 h-3.5" />
+          </button>
+
           <p className="flex items-center gap-1">
             Crafted with <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" /> & AI Precision for Coffee Enthusiasts.
           </p>

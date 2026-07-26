@@ -1,182 +1,219 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight, ShieldCheck, Clock, Award, Coffee } from 'lucide-react';
+import React from "react";
+import {motion} from "framer-motion";
+import {ArrowRight, Coffee, Sparkles, Star} from "lucide-react";
 
-export default function Hero({ onOpenReservation }) {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.1
-      }
+export default function Hero({onOpenReservation}) {
+  // Floating animation variants for floating coffee beans
+  const floatAnim1 = {
+    y: [
+      0, -14, 0
+    ],
+    rotate: [
+      0, 10, -5, 0
+    ],
+    transition: {
+      duration: 5,
+      repeat: Infinity,
+      ease: "easeInOut"
     }
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
+  const floatAnim2 = {
+    y: [
+      0, 12, 0
+    ],
+    rotate: [
+      0, -12, 8, 0
+    ],
+    transition: {
+      duration: 6,
+      repeat: Infinity,
+      ease: "easeInOut",
+      delay: 0.5
     }
   };
 
-  return (
-    <section className="relative min-h-screen pt-32 pb-20 flex items-center justify-center overflow-hidden bg-[#FDFBF7] dark:bg-[#160F0B] text-[#2C1A14] dark:text-white">
-      
-      {/* Soft Glow */}
-      <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.08, 0.15, 0.08]
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-[#C67C4E]/20 dark:bg-coffee-400/20 rounded-full blur-[140px] pointer-events-none"
-      />
+  const floatAnim3 = {
+    y: [
+      0, -18, 0
+    ],
+    rotate: [
+      0, 15, -15, 0
+    ],
+    transition: {
+      duration: 7,
+      repeat: Infinity,
+      ease: "easeInOut",
+      delay: 1
+    }
+  };
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
-        >
-          
-          {/* LEFT COLUMN */}
-          <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
-            
-            {/* Top Pill */}
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-coffee-900/70 border border-[#E5DCD3] dark:border-coffee-800 shadow-card-soft">
-              <Sparkles className="w-3.5 h-3.5 text-[#C67C4E] dark:text-[#F0C085]" />
-              <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#2C1A14] dark:text-[#F0C085]">
-                Next-Gen Artisanal Coffee Experience
-              </span>
-            </motion.div>
+  return (<section className="relative min-h-[92vh] pt-28 pb-16 flex items-center justify-center overflow-hidden bg-[#FAF6F0] dark:bg-[#120B08] text-[#2C1A14] dark:text-white">
+    {/* BACKGROUND WAVE SPLIT (Cream Left / Dark Brown Right) */}
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Right side dark coffee background shape */}
+      <div className="absolute top-0 right-0 w-full lg:w-[55%] h-full bg-[#2C1A14] dark:bg-[#1A0E0A] rounded-l-[100px] lg:rounded-l-[200px] shadow-2xl transition-all duration-500"/> {/* Decorative background glow */}
+      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-[#C67C4E]/20 dark:bg-amber-500/10 blur-[130px] rounded-full"/>
+    </div>
 
-            {/* Headline */}
-            <motion.h1 variants={itemVariants} className="text-4xl sm:text-6xl lg:text-7xl font-serif font-extrabold tracking-tight text-[#2C1A14] dark:text-white leading-[1.1]">
-              Artisanal Coffee <br className="hidden sm:inline" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2C1A14] via-[#C67C4E] to-[#A35D31] dark:from-[#F0C085] dark:via-crema-light dark:to-[#C67C4E]">
-                Meets AI Precision
-              </span>
-            </motion.h1>
-
-            {/* Paragraph */}
-            <motion.p variants={itemVariants} className="text-base sm:text-lg text-[#5C4337] dark:text-coffee-200 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              Experience hand-crafted direct-trade espresso beans, slow 20-hour cold brews, and our groundbreaking <strong className="text-[#2C1A14] dark:text-[#F0C085] font-extrabold">AI Drink Customizer</strong> designed to tailor every cup to your exact mood and flavor profile.
-            </motion.p>
-
-            {/* Buttons */}
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-              <motion.a
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                href="#custom-builder"
-                className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#2C1A14] dark:bg-[#C67C4E] hover:bg-[#3D291F] dark:hover:bg-[#A35D31] text-white dark:text-[#160F0B] font-extrabold text-sm uppercase tracking-wider shadow-sm transition-all duration-300 flex items-center justify-center gap-3"
-              >
-                <Sparkles className="w-4 h-4" />
-                Build Your Own Coffee
-                <ArrowRight className="w-4 h-4" />
-              </motion.a>
-
-              <motion.a
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                href="#menu"
-                className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white dark:bg-coffee-900 hover:bg-[#FDFBF7] dark:hover:bg-coffee-800 border border-[#E5DCD3] dark:border-coffee-700 text-[#2C1A14] dark:text-white font-extrabold text-sm uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
-              >
-                <Coffee className="w-4 h-4 text-[#C67C4E] dark:text-[#F0C085]" />
-                Explore Menu
-              </motion.a>
-
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={onOpenReservation}
-                className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-transparent hover:bg-white/60 dark:hover:bg-coffee-900/50 text-[#5C4337] dark:text-coffee-300 font-extrabold text-xs uppercase tracking-wider transition"
-              >
-                Reserve Table
-              </motion.button>
-            </motion.div>
-
-            {/* Trust Badges */}
-            <motion.div variants={itemVariants} className="pt-8 border-t border-[#E5DCD3] dark:border-coffee-800 grid grid-cols-3 gap-4 text-left">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-white dark:bg-[#C67C4E]/10 border border-[#E5DCD3] dark:border-[#C67C4E]/20 text-[#2C1A14] dark:text-[#F0C085] shadow-sm">
-                  <Award className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="block text-base font-extrabold text-[#2C1A14] dark:text-white">4.95 ★</span>
-                  <span className="text-xs text-[#5C4337] dark:text-coffee-400 font-bold">140+ Reviews</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-white dark:bg-[#C67C4E]/10 border border-[#E5DCD3] dark:border-[#C67C4E]/20 text-[#2C1A14] dark:text-[#F0C085] shadow-sm">
-                  <Clock className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="block text-base font-extrabold text-[#2C1A14] dark:text-white">15 Mins</span>
-                  <span className="text-xs text-[#5C4337] dark:text-coffee-400 font-bold">Express Delivery</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-white dark:bg-[#C67C4E]/10 border border-[#E5DCD3] dark:border-[#C67C4E]/20 text-[#2C1A14] dark:text-[#F0C085] shadow-sm">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="block text-base font-extrabold text-[#2C1A14] dark:text-white">100% Organic</span>
-                  <span className="text-xs text-[#5C4337] dark:text-coffee-400 font-bold">Direct-Trade</span>
-                </div>
-              </div>
-            </motion.div>
-
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6 items-center">
+        {/* LEFT COLUMN: TYPOGRAPHY & PRICING PILLS */}
+        <motion.div initial={{
+            opacity: 0,
+            x: -30
+          }} animate={{
+            opacity: 1,
+            x: 0
+          }} transition={{
+            duration: 0.7,
+            ease: "easeOut"
+          }} className="lg:col-span-6 space-y-7 text-left pr-0 lg:pr-4">
+          {/* Small Brand Tagline */}
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#2C1A14]/10 dark:bg-amber-400/10 border border-[#2C1A14]/15 dark:border-amber-400/30">
+            <Coffee className="w-4 h-4 text-[#C67C4E] dark:text-[#F0C085]"/>
+            <span className="text-xs font-black uppercase tracking-widest text-[#2C1A14] dark:text-[#F0C085]">
+              Oak & Bean • Coffee House
+            </span>
           </div>
 
-          {/* RIGHT COLUMN */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, ease: 'easeOut', delay: 0.2 }}
-            className="lg:col-span-5 relative flex items-center justify-center"
-          >
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-              className="relative w-full max-w-md aspect-square rounded-3xl overflow-hidden glass-card p-4 border border-[#E5DCD3] dark:border-amber-400/30 shadow-xl group"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=1000&q=80"
-                alt="Signature Cold Brew"
-                className="w-full h-full object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-700"
-              />
-              
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-                className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl glass-panel border border-[#E5DCD3] dark:border-white/20 shadow-lg backdrop-blur-md"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
-                    <div>
-                      <span className="text-[11px] font-extrabold text-[#5C4337] dark:text-[#F0C085] block uppercase tracking-wider">Today's Special</span>
-                      <span className="text-sm font-serif font-bold text-[#2C1A14] dark:text-white">Nitro Lavender Foam Brew</span>
-                    </div>
-                  </div>
-                  <span className="text-base font-black text-[#2C1A14] dark:text-[#F0C085]">$6.20</span>
-                </div>
-              </motion.div>
+          {/* Giant Main Display Headline */}
+          <div className="space-y-1">
+            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-sans font-black tracking-tight leading-[0.9] text-[#2C1A14] dark:text-white uppercase">
+              COLD
+            </h1>
+            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-sans font-black tracking-tight leading-[0.9] bg-gradient-to-r from-[#C67C4E] via-[#A35D31] to-[#855E4C] dark:from-[#F0C085] dark:to-[#C67C4E] bg-clip-text text-transparent uppercase">
+              COFFEE
+            </h1>
+          </div>
 
-            </motion.div>
+          {/* Tagline & Subtitle */}
+          <div className="space-y-2">
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#2C1A14] dark:text-amber-200">
+              Cool. Smooth. Perfect.
+            </h2>
+            <p className="text-sm sm:text-base text-[#5C4337] dark:text-coffee-200 font-medium max-w-md leading-relaxed">
+              Chill out with every sip – artisanal cold coffee, slow-brewed for 20 hours for your ultimate refreshment.
+            </p>
+          </div>
+
+          {/* Pricing Pills (BIG SHARE $25, MINI SHAKE $11) */}
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="px-5 py-3 rounded-2xl bg-[#2C1A14] text-white dark:bg-[#1D130E] dark:text-white border border-[#3D291F] dark:border-amber-400/30 shadow-md flex items-center justify-between gap-6">
+              <span className="text-xs font-black uppercase tracking-wider text-amber-200/90">
+                Big Share
+              </span>
+              <span className="text-lg font-black text-amber-400">$25</span>
+            </div>
+
+            <div className="px-5 py-3 rounded-2xl bg-[#2C1A14] text-white dark:bg-[#1D130E] dark:text-white border border-[#3D291F] dark:border-amber-400/30 shadow-md flex items-center justify-between gap-6">
+              <span className="text-xs font-black uppercase tracking-wider text-amber-200/90">
+                Mini Shake
+              </span>
+              <span className="text-lg font-black text-amber-400">$11</span>
+            </div>
+
+            <div className="px-4 py-3 rounded-2xl bg-amber-500/10 dark:bg-amber-400/10 border border-amber-500/30 text-xs font-bold text-[#2C1A14] dark:text-[#F0C085] flex items-center gap-1.5">
+              <Star className="w-4 h-4 fill-amber-400 text-amber-400"/>
+              <span>4.95 ★ (140+ Reviews)</span>
+            </div>
+          </div>
+
+          {/* Primary Order Button */}
+          <div className="pt-3 flex items-center gap-4">
+            <motion.a whileHover={{
+                scale: 1.05,
+                x: 5
+              }} whileTap={{
+                scale: 0.95
+              }} href="#menu" className="px-9 py-4 rounded-full bg-[#2C1A14] dark:bg-[#C67C4E] hover:bg-[#3D291F] dark:hover:bg-[#A35D31] text-white dark:text-[#160F0B] font-black text-sm uppercase tracking-widest shadow-xl flex items-center gap-3 transition-all duration-300">
+              <span>ORDER NOW</span>
+              <ArrowRight className="w-4 h-4"/>
+            </motion.a>
+
+            <button onClick={onOpenReservation} className="px-6 py-4 text-xs font-extrabold uppercase tracking-wider text-[#5C4337] dark:text-coffee-300 hover:text-[#2C1A14] dark:hover:text-white transition">
+              Reserve Table &rarr;
+            </button>
+          </div>
+        </motion.div>
+
+        {/* RIGHT COLUMN: CENTERPIECE ICED COFFEE & FLOATING COFFEE BEANS */}
+        <motion.div initial={{
+            opacity: 0,
+            scale: 0.9
+          }} animate={{
+            opacity: 1,
+            scale: 1
+          }} transition={{
+            duration: 0.8,
+            delay: 0.2
+          }} className="lg:col-span-6 relative flex items-center justify-center min-h-[480px]">
+          {/* FLOATING COFFEE BEANS (Scattered around the drink) */}
+
+          {/* Top Left Floating Bean */}
+          <motion.div animate={floatAnim1} className="absolute top-4 left-6 z-20 w-12 h-12 opacity-90 drop-shadow-lg">
+            <svg viewBox="0 0 100 100" className="w-full h-full text-[#3D291F] dark:text-[#C67C4E] fill-current">
+              <ellipse cx="50" cy="50" rx="35" ry="45" transform="rotate(-25 50 50)"/>
+              <path d="M48 10 Q 55 50 48 90" stroke="#FAF6F0" strokeWidth="6" fill="none"/>
+            </svg>
           </motion.div>
 
+          {/* Top Right Floating Bean */}
+          <motion.div animate={floatAnim2} className="absolute top-8 right-8 z-20 w-14 h-14 opacity-90 drop-shadow-xl">
+            <svg viewBox="0 0 100 100" className="w-full h-full text-[#4A3022] dark:text-[#D48A5A] fill-current">
+              <ellipse cx="50" cy="50" rx="38" ry="48" transform="rotate(35 50 50)"/>
+              <path d="M52 8 Q 45 50 52 92" stroke="#1A0E0A" strokeWidth="7" fill="none"/>
+            </svg>
+          </motion.div>
+
+          {/* Bottom Left Floating Bean */}
+          <motion.div animate={floatAnim3} className="absolute bottom-10 left-4 z-20 w-16 h-16 opacity-85 blur-[0.5px] drop-shadow-xl">
+            <svg viewBox="0 0 100 100" className="w-full h-full text-[#2C1A14] dark:text-[#855E4C] fill-current">
+              <ellipse cx="50" cy="50" rx="40" ry="50" transform="rotate(-40 50 50)"/>
+              <path d="M47 5 Q 56 50 47 95" stroke="#F5EFE6" strokeWidth="7" fill="none"/>
+            </svg>
+          </motion.div>
+
+          {/* Bottom Right Floating Bean */}
+          <motion.div animate={floatAnim1} className="absolute bottom-6 right-10 z-20 w-11 h-11 opacity-90 drop-shadow-md">
+            <svg viewBox="0 0 100 100" className="w-full h-full text-[#5C4337] dark:text-amber-400 fill-current">
+              <ellipse cx="50" cy="50" rx="32" ry="42" transform="rotate(15 50 50)"/>
+              <path d="M51 12 Q 44 50 51 88" stroke="#FAF6F0" strokeWidth="5" fill="none"/>
+            </svg>
+          </motion.div>
+
+          {/* Center Background Liquid Splash Ring */}
+          <div className="absolute w-[360px] h-[360px] sm:w-[440px] sm:h-[440px] rounded-full bg-gradient-to-tr from-[#3D291F]/40 via-[#C67C4E]/30 to-amber-500/20 blur-[50px] animate-pulse pointer-events-none"/> {/* CENTERPIECE ICED COFFEE CUP */}
+          <div className="relative z-10 max-w-sm sm:max-w-md w-full flex flex-col items-center">
+            <motion.div whileHover={{
+                scale: 1.04,
+                rotate: 2
+              }} transition={{
+                type: "spring",
+                stiffness: 200
+              }} className="relative group cursor-pointer">
+              {/* Main Hero Image */}
+              <img src="/iced_coffee_hero.png" alt="Craft Iced Cold Coffee" className="w-full h-auto max-h-[520px] object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.5)] transition-transform duration-500"/> {/* Wooden Coaster Base Shadow */}
+              <div className="w-3/4 h-6 mx-auto -mt-4 bg-[#1A0E0A]/60 dark:bg-black/80 blur-md rounded-full"/>
+            </motion.div>
+
+            {/* Floating Quality Badge */}
+            <motion.div initial={{
+                y: 20,
+                opacity: 0
+              }} animate={{
+                y: 0,
+                opacity: 1
+              }} transition={{
+                delay: 0.6,
+                duration: 0.5
+              }} className="mt-4 px-5 py-2.5 rounded-full bg-[#FAF6F0]/90 dark:bg-[#1D130E]/90 border border-[#2C1A14]/20 dark:border-amber-400/30 shadow-xl backdrop-blur-md flex items-center gap-2.5 text-xs font-black text-[#2C1A14] dark:text-[#F0C085]">
+              <Sparkles className="w-4 h-4 text-[#C67C4E] animate-pulse"/>
+              <span>Handcrafted Cold Brew • 100% Single Origin Arabica</span>
+            </motion.div>
+          </div>
         </motion.div>
       </div>
-    </section>
-  );
+    </div>
+  </section>);
 }
