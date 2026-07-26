@@ -60,10 +60,10 @@ export default function Navbar({onOpenReservation}) {
     }} transition={{
       duration: 0.5,
       ease: "easeOut"
-    }} className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+    }} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
     scrolled
-      ? "py-3.5 bg-[#FDFBF7]/90 dark:bg-[#160F0B]/90 backdrop-blur-xl border-b border-[#E5DCD3] dark:border-coffee-800 shadow-card-soft"
-      : "py-5 bg-transparent"}`}>
+      ? "py-3 bg-white/90 dark:bg-[#160F0B]/90 backdrop-blur-xl shadow-lg"
+      : "py-4 bg-white/50 dark:bg-[#160F0B]/50 backdrop-blur-lg"}`}>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
       {/* Brand Logo */}
       <a href="#" className="flex items-center gap-3 group">
@@ -74,7 +74,8 @@ export default function Navbar({onOpenReservation}) {
             scale: 0.95
           }} className="relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#2C1A14] via-[#5C4337] to-[#C67C4E] p-0.5 shadow-md flex items-center justify-center overflow-hidden border border-amber-300/40">
           {/* Subtle Inner Glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(240,192,133,0.35),transparent_70%)]"/> {/* Artisanal Coffee Cup & Bean Emblem SVG */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(240,192,133,0.35),transparent_70%)]"/>{" "}
+          {/* Artisanal Coffee Cup & Bean Emblem SVG */}
           <svg className="w-6 h-6 text-[#FDFBF7] relative z-10 filter drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             {/* Steam curves */}
             <path d="M6 3c.5 1 1.5 1.5 1.5 2.5s-1 1.5-.5 2.5" className="animate-pulse" stroke="#F0C085" strokeWidth="1.5"/>
@@ -83,7 +84,8 @@ export default function Navbar({onOpenReservation}) {
               }}/>
             <path d="M18 3c.5 1 1.5 1.5 1.5 2.5s-1 1.5-.5 2.5" className="animate-pulse" stroke="#F0C085" strokeWidth="1.5" style={{
                 animationDelay: "600ms"
-              }}/> {/* Coffee Cup */}
+              }}/>{" "}
+            {/* Coffee Cup */}
             <path d="M17 8h1a4 4 0 0 1 0 8h-1" stroke="#FDFBF7" strokeWidth="2"/>
             <path d="M3 8h14v7a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" fill="currentColor" fillOpacity="0.15" stroke="#FDFBF7" strokeWidth="2"/>
             <line x1="6" y1="21" x2="14" y2="21" stroke="#FDFBF7" strokeWidth="2"/>
@@ -102,9 +104,26 @@ export default function Navbar({onOpenReservation}) {
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-8">
         {
-          navLinks.map(link => (<a key={link.name} href={link.href} className="text-xs font-extrabold uppercase tracking-wider text-[#3D291F] dark:text-coffee-200 hover:text-[#C67C4E] dark:hover:text-[#F0C085] transition-colors">
-            {link.name}
-          </a>))
+          navLinks.map((link, index) => {
+            const isLeftSide = index < 3;
+
+            return (<motion.a key={link.name} href={link.href} whileHover={{
+                y: -2
+              }} transition={{
+                duration: 0.2
+              }} className={`relative text-xs font-extrabold uppercase tracking-wider transition-all duration-500 ease-in-out
+          ${
+              scrolled
+                ? "text-[#3D291F] dark:text-coffee-100 hover:text-[#C67C4E] dark:hover:text-[#F0C085]"
+                : isLeftSide
+                  ? "text-[#2C1A14] hover:text-[#C67C4E]"
+                  : "text-[#F8E6D3] hover:text-white"}`}>
+              {link.name}
+
+              {/* Animated underline */}
+              <span className={`absolute left-0 -bottom-1 h-[2px] bg-[#C67C4E] transition-all duration-300 w-0 hover:w-full`}/>
+            </motion.a>);
+          })
         }
       </nav>
 

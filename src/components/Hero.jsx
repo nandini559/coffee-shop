@@ -52,7 +52,8 @@ export default function Hero({onOpenReservation}) {
     {/* BACKGROUND WAVE SPLIT (Cream Left / Dark Brown Right) */}
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
       {/* Right side dark coffee background shape */}
-      <div className="absolute top-0 right-0 w-full lg:w-[55%] h-full bg-[#2C1A14] dark:bg-[#1A0E0A] rounded-l-[100px] lg:rounded-l-[200px] shadow-2xl transition-all duration-500"/> {/* Decorative background glow */}
+      <div className="absolute top-0 right-0 w-full lg:w-[55%] h-full bg-[#2C1A14] dark:bg-[#1A0E0A] rounded-l-[100px] lg:rounded-l-[200px] shadow-2xl transition-all duration-500"/>{" "}
+      {/* Decorative background glow */}
       <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-[#C67C4E]/20 dark:bg-amber-500/10 blur-[130px] rounded-full"/>
     </div>
 
@@ -70,12 +71,13 @@ export default function Hero({onOpenReservation}) {
             ease: "easeOut"
           }} className="lg:col-span-6 space-y-7 text-left pr-0 lg:pr-4">
           {/* Small Brand Tagline */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#2C1A14]/10 dark:bg-amber-400/10 border border-[#2C1A14]/15 dark:border-amber-400/30">
+          {/* <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#2C1A14]/10 dark:bg-amber-400/10 border border-[#2C1A14]/15 dark:border-amber-400/30">
             <Coffee className="w-4 h-4 text-[#C67C4E] dark:text-[#F0C085]"/>
             <span className="text-xs font-black uppercase tracking-widest text-[#2C1A14] dark:text-[#F0C085]">
               Oak & Bean • Coffee House
             </span>
-          </div>
+          </div> */
+          }
 
           {/* Giant Main Display Headline */}
           <div className="space-y-1">
@@ -149,7 +151,6 @@ export default function Hero({onOpenReservation}) {
             delay: 0.2
           }} className="lg:col-span-6 relative flex items-center justify-center min-h-[480px]">
           {/* FLOATING COFFEE BEANS (Scattered around the drink) */}
-
           {/* Top Left Floating Bean */}
           <motion.div animate={floatAnim1} className="absolute top-4 left-6 z-20 w-12 h-12 opacity-90 drop-shadow-lg">
             <svg viewBox="0 0 100 100" className="w-full h-full text-[#3D291F] dark:text-[#C67C4E] fill-current">
@@ -157,7 +158,6 @@ export default function Hero({onOpenReservation}) {
               <path d="M48 10 Q 55 50 48 90" stroke="#FAF6F0" strokeWidth="6" fill="none"/>
             </svg>
           </motion.div>
-
           {/* Top Right Floating Bean */}
           <motion.div animate={floatAnim2} className="absolute top-8 right-8 z-20 w-14 h-14 opacity-90 drop-shadow-xl">
             <svg viewBox="0 0 100 100" className="w-full h-full text-[#4A3022] dark:text-[#D48A5A] fill-current">
@@ -165,7 +165,6 @@ export default function Hero({onOpenReservation}) {
               <path d="M52 8 Q 45 50 52 92" stroke="#1A0E0A" strokeWidth="7" fill="none"/>
             </svg>
           </motion.div>
-
           {/* Bottom Left Floating Bean */}
           <motion.div animate={floatAnim3} className="absolute bottom-10 left-4 z-20 w-16 h-16 opacity-85 blur-[0.5px] drop-shadow-xl">
             <svg viewBox="0 0 100 100" className="w-full h-full text-[#2C1A14] dark:text-[#855E4C] fill-current">
@@ -173,7 +172,6 @@ export default function Hero({onOpenReservation}) {
               <path d="M47 5 Q 56 50 47 95" stroke="#F5EFE6" strokeWidth="7" fill="none"/>
             </svg>
           </motion.div>
-
           {/* Bottom Right Floating Bean */}
           <motion.div animate={floatAnim1} className="absolute bottom-6 right-10 z-20 w-11 h-11 opacity-90 drop-shadow-md">
             <svg viewBox="0 0 100 100" className="w-full h-full text-[#5C4337] dark:text-amber-400 fill-current">
@@ -181,9 +179,9 @@ export default function Hero({onOpenReservation}) {
               <path d="M51 12 Q 44 50 51 88" stroke="#FAF6F0" strokeWidth="5" fill="none"/>
             </svg>
           </motion.div>
-
           {/* Center Background Liquid Splash Ring */}
-          <div className="absolute w-[360px] h-[360px] sm:w-[440px] sm:h-[440px] rounded-full bg-gradient-to-tr from-[#3D291F]/40 via-[#C67C4E]/30 to-amber-500/20 blur-[50px] animate-pulse pointer-events-none"/> {/* CENTERPIECE ICED COFFEE CUP */}
+          <div className="absolute w-[360px] h-[360px] sm:w-[440px] sm:h-[440px] rounded-full bg-gradient-to-tr from-[#3D291F]/40 via-[#C67C4E]/30 to-amber-500/20 blur-[50px] animate-pulse pointer-events-none"/>{" "}
+          {/* CENTERPIECE ICED COFFEE CUP */}
           <div className="relative z-10 max-w-sm sm:max-w-md w-full flex flex-col items-center">
             <motion.div whileHover={{
                 scale: 1.04,
@@ -193,7 +191,8 @@ export default function Hero({onOpenReservation}) {
                 stiffness: 200
               }} className="relative group cursor-pointer">
               {/* Main Hero Image */}
-              <img src="/iced_coffee_hero.png" alt="Craft Iced Cold Coffee" className="w-full h-auto max-h-[520px] object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.5)] transition-transform duration-500"/> {/* Wooden Coaster Base Shadow */}
+              <img src="/iced_coffee_hero.png" alt="Craft Iced Cold Coffee" className="w-full h-auto max-h-[520px] object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.5)] transition-transform duration-500"/>{" "}
+              {/* Wooden Coaster Base Shadow */}
               <div className="w-3/4 h-6 mx-auto -mt-4 bg-[#1A0E0A]/60 dark:bg-black/80 blur-md rounded-full"/>
             </motion.div>
 
