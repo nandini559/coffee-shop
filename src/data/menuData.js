@@ -34,7 +34,7 @@ export const MENU_ITEMS = [
     price: 5.8,
     rating: 5,
     reviewsCount: 142,
-    image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=800&q=80",
+    image: "/asset/coffeepic4.jpg",
     description: "Double shot of direct-trade Ethiopian espresso poured over velvety steamed oat milk, infused with house-made salted amber caramel.",
     ingredients: [
       "Ethiopian Single Origin Espresso", "Organic Oat Milk", "House-made Salted Caramel", "Madagascar Vanilla Bean"
@@ -53,7 +53,7 @@ export const MENU_ITEMS = [
     price: 6.2,
     rating: 4.95,
     reviewsCount: 198,
-    image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=800&q=80",
+    image: "/asset/coffeepic7.jpg",
     description: "Slow-steeped 20-hour cold brew infused with nitrogen for a silky cascading micro-foam, topped with organic French lavender cold cream.",
     ingredients: [
       "20-Hr Cold Brew Blend", "Nitrogen Infusion", "French Lavender Syrup", "Sweet Cream Cold Foam"
@@ -73,7 +73,7 @@ export const MENU_ITEMS = [
     price: 5.4,
     rating: 4.8,
     reviewsCount: 96,
-    image: "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&w=800&q=80",
+    image: "/asset/coffeepic5.png",
     description: "Ristretto espresso shots combined with silky micro-foamed Minor Figures Oat Milk, featuring intricate hand-poured latte art.",
     ingredients: [
       "Ristretto Blend Espresso", "Barista Oat Milk", "Touch of Cinnamon Dust"
@@ -88,12 +88,12 @@ export const MENU_ITEMS = [
     pairingRecommendation: "Almond Biscotti"
   }, {
     id: "item-4",
-    name: "Ceremonial Uji Matcha Latte",
+    name: "Ceremonial Uji Latte",
     category: "matcha-tea",
     price: 6.5,
     rating: 4.9,
     reviewsCount: 115,
-    image: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=800&q=80",
+    image: "/asset/coffeepic3.jpg",
     description: "First-harvest ceremonial grade Kyoto matcha whisked to perfection with warm almond milk and a touch of raw wild wildflower honey.",
     ingredients: [
       "Uji Ceremonial Matcha", "Unsweetened Almond Milk", "Raw Honey", "Vanilla Bean Paste"
@@ -108,12 +108,12 @@ export const MENU_ITEMS = [
     pairingRecommendation: "Matcha White Chocolate Muffin"
   }, {
     id: "item-5",
-    name: "Smoked Vanilla Spanish Latte",
+    name: "Smoked Vanilla Spanish Tea",
     category: "espresso",
     price: 5.9,
     rating: 4.85,
     reviewsCount: 88,
-    image: "https://images.unsplash.com/photo-1585494156145-1c60a4fe952b?auto=format&fit=crop&w=800&q=80",
+    image: "/asset/coffeepic2.jpg",
     description: "Rich espresso folded with condensed milk, whole cream, and smoked bourbon vanilla bean, dusted with cocoa.",
     ingredients: [
       "Espresso Blend", "Condensed Whole Milk", "Bourbon Vanilla Bean", "Valrhona Cocoa Powder"

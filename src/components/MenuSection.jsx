@@ -30,7 +30,7 @@ export default function MenuSection() {
   return (<section id="menu" className="py-24 bg-[#FDFBF7] dark:bg-[#160F0B] text-[#2C1A14] dark:text-white relative">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       {/* Section Title */}
-      <div className="text-center max-w-3xl mx-auto mb-12">
+      <div className="text-center max-w-3xl mx-auto mb-8">
         {/* <span className="text-xs font-extrabold uppercase tracking-widest text-[#2C1A14] dark:text-[#F0C085] bg-white dark:bg-[#F0C085]/10 px-4 py-1.5 rounded-full border border-[#E5DCD3] dark:border-amber-400/30 shadow-sm">
             Artisanal Selection
           </span> */
@@ -40,12 +40,12 @@ export default function MenuSection() {
           <span className="text-[#C67C4E] dark:text-[#F0C085]">Menu</span>
         </h2>
         <p className="mt-3 text-[#5C4337] dark:text-coffee-200 text-base font-medium">
-          Explore our ethically harvested single-origin brews, house-made lavender foams, and freshly baked pastries.
+          Explore our ethically harvested single-origin brews, home-made foams, and freshly baked pastries.
         </p>
       </div>
 
       {/* Search Bar & Tag Filters */}
-      <div className="max-w-2xl mx-auto mb-10 space-y-4">
+      <div className="max-w-xl mx-auto mb-3 space-y-4">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#855E4C] dark:text-coffee-400"/>
           <input type="text" placeholder="Search espresso, cold brew, matcha, sourdough, croissant..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white dark:bg-[#160F0B] border border-[#E5DCD3] dark:border-coffee-800 focus:border-[#C67C4E] text-[#2C1A14] dark:text-white text-sm font-medium placeholder-[#855E4C] focus:outline-none transition shadow-sm"/>{" "}
@@ -57,7 +57,7 @@ export default function MenuSection() {
         </div>
 
         {/* Filter Tags */}
-        <div className="flex flex-wrap items-center justify-center gap-2">
+        {/* <div className="flex flex-wrap items-center justify-center gap-2">
           <span className="text-xs font-extrabold text-[#855E4C] dark:text-coffee-400 mr-1 uppercase tracking-wider">
             Dietary:
           </span>
@@ -73,15 +73,18 @@ export default function MenuSection() {
               {tag}
             </button>))
           }
-        </div>
+        </div> */
+        }
       </div>
 
       {/* Category Tabs */}
-      <div className="flex items-center justify-center flex-wrap gap-2.5 mb-12">
+
+      <div className="flex items-center justify-center gap-2 mb-10 flex-nowrap">
         {
           CATEGORIES.map(cat => {
             const isActive = activeCategory === cat.id;
-            return (<button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`relative px-5 py-3 rounded-2xl font-extrabold text-xs sm:text-sm tracking-wider uppercase transition-colors ${
+
+            return (<button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`relative px-3 py-1.5 rounded-lg text-[11px] font-semibold uppercase tracking-wide transition-all duration-300 ${
               isActive
                 ? "text-white dark:text-[#160F0B]"
                 : "bg-white dark:bg-coffee-950/80 border border-[#E5DCD3] dark:border-coffee-800 text-[#2C1A14] dark:text-coffee-200 hover:border-[#C67C4E]"}`}>
@@ -90,9 +93,12 @@ export default function MenuSection() {
                     type: "spring",
                     stiffness: 400,
                     damping: 30
-                  }} className="absolute inset-0 rounded-2xl bg-[#2C1A14] dark:bg-gradient-to-r dark:from-[#C67C4E] dark:to-[#F0C085] shadow-sm"/>)
+                  }} className="absolute inset-0 rounded-lg bg-[#2C1A14] dark:bg-gradient-to-r dark:from-[#C67C4E] dark:to-[#F0C085]"/>)
               }
-              <span className="relative z-10">{cat.name}</span>
+
+              <span className="relative z-10 whitespace-nowrap">
+                {cat.name}
+              </span>
             </button>);
           })
         }
@@ -173,7 +179,7 @@ export default function MenuSection() {
                       </div>
                     </div>
 
-                    <div className="p-6 pt-0 flex items-center justify-between border-t border-[#E5DCD3] dark:border-coffee-800">
+                    <div className="p-6 pt-3 flex items-center justify-between border-t border-[#E5DCD3] dark:border-coffee-800">
                       <div>
                         <span className="text-xs text-[#855E4C] dark:text-coffee-400 block font-bold uppercase tracking-wider">
                           Price

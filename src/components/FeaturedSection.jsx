@@ -132,7 +132,7 @@ export default function FeaturedSection() {
                   scale: 1.05
                 }} whileTap={{
                   scale: 0.95
-                }} onClick={() => addToCart(item)} className="px-1 py-2 rounded-2xl font-semibold text-xs uppercase tracking-wider shadow-md flex items-center gap-2 bg-[#2C1A14] dark:bg-[#C67C4E] hover:bg-[#3D291F] dark:hover:bg-[#A35D31] text-white dark:text-[#160F0B] transition-all">
+                }} onClick={() => addToCart(item)} className="px-2 py-2 rounded-2xl font-semibold text-xs uppercase tracking-wider shadow-md flex items-center gap-2 bg-[#2C1A14] dark:bg-[#C67C4E] hover:bg-[#3D291F] dark:hover:bg-[#A35D31] text-white dark:text-[#160F0B] transition-all">
                 <ShoppingBag className="w-4 h-4"/>
                 <span>Order Now</span>
               </motion.button>

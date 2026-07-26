@@ -81,11 +81,14 @@ export default function Hero({onOpenReservation}) {
 
           {/* Giant Main Display Headline */}
           <div className="space-y-1">
-            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-sans font-black tracking-tight leading-[0.9] text-[#2C1A14] dark:text-white uppercase">
-              COLD
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-sans font-black tracking-tight leading-[1.05] text-[#2C1A14] dark:text-white ">
+              Awaken Your
             </h1>
-            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-sans font-black tracking-tight leading-[0.9] bg-gradient-to-r from-[#C67C4E] via-[#A35D31] to-[#855E4C] dark:from-[#F0C085] dark:to-[#C67C4E] bg-clip-text text-transparent uppercase">
-              COFFEE
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-sans font-black tracking-tight leading-[1.05] bg-gradient-to-r from-[#C67C4E] via-[#A35D31] to-[#855E4C] dark:from-[#F0C085] dark:to-[#C67C4E] bg-clip-text text-transparent ">
+              Senses with
+            </h1>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-sans font-black tracking-tight leading-[1.05] bg-gradient-to-r from-[#C67C4E] via-[#A35D31] to-[#855E4C] dark:from-[#F0C085] dark:to-[#C67C4E] bg-clip-text text-transparent ">
+              Every Sip
             </h1>
           </div>
 
@@ -173,12 +176,13 @@ export default function Hero({onOpenReservation}) {
             </svg>
           </motion.div>
           {/* Bottom Right Floating Bean */}
-          <motion.div animate={floatAnim1} className="absolute bottom-6 right-10 z-20 w-11 h-11 opacity-90 drop-shadow-md">
+          {/* <motion.div animate={floatAnim1} className="absolute bottom-6 right-10 z-20 w-11 h-11 opacity-90 drop-shadow-md">
             <svg viewBox="0 0 100 100" className="w-full h-full text-[#5C4337] dark:text-amber-400 fill-current">
               <ellipse cx="50" cy="50" rx="32" ry="42" transform="rotate(15 50 50)"/>
               <path d="M51 12 Q 44 50 51 88" stroke="#FAF6F0" strokeWidth="5" fill="none"/>
             </svg>
-          </motion.div>
+          </motion.div> */
+          }
           {/* Center Background Liquid Splash Ring */}
           <div className="absolute w-[360px] h-[360px] sm:w-[440px] sm:h-[440px] rounded-full bg-gradient-to-tr from-[#3D291F]/40 via-[#C67C4E]/30 to-amber-500/20 blur-[50px] animate-pulse pointer-events-none"/>{" "}
           {/* CENTERPIECE ICED COFFEE CUP */}
@@ -191,7 +195,7 @@ export default function Hero({onOpenReservation}) {
                 stiffness: 200
               }} className="relative group cursor-pointer">
               {/* Main Hero Image */}
-              <img src="/iced_coffee_hero.png" alt="Craft Iced Cold Coffee" className="w-full h-auto max-h-[520px] object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.5)] transition-transform duration-500"/>{" "}
+              <img src="/iced_coffee_hero.png" alt="Craft Iced Cold Coffee" className="w-full h-auto max-h-[520px] object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.5)] transition-transform duration-500 rounded-full"/>{" "}
               {/* Wooden Coaster Base Shadow */}
               <div className="w-3/4 h-6 mx-auto -mt-4 bg-[#1A0E0A]/60 dark:bg-black/80 blur-md rounded-full"/>
             </motion.div>

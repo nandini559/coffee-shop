@@ -32,7 +32,7 @@ export default function AboutSection() {
                 20 Hrs
               </span>
               <span className="text-xs font-bold text-[#523A30] dark:text-coffee-300 uppercase tracking-wider">
-                Pure Coffee Brew
+                Pure Brew
               </span>
             </div>
             <motion.div whileHover={{

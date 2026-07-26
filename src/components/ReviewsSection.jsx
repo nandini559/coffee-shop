@@ -13,25 +13,22 @@ export default function ReviewsSection() {
 
   const stickyNoteColors = [
     {
-      bg: "bg-[#FFF9C4] dark:bg-[#FFF59D] text-[#2C1A14]",
-      border: "border-[#FBC02D]/40",
-      tape: "bg-white/80"
+      bg: "bg-[#F4F0FF] dark:bg-[#D8CFF1] text-[#2C1A14]",
+      border: "border-[#C9BEEA]/30",
+      tape: "bg-[#FBFAFF]/80"
     }, {
-      // Yellow
-      bg: "bg-[#FFECB3] dark:bg-[#FFE082] text-[#2C1A14]",
-      border: "border-[#FFA000]/40",
-      tape: "bg-amber-100/90"
+      bg: "bg-[#FCEEF5] dark:bg-[#E9C8D7] text-[#2C1A14]",
+      border: "border-[#E9B8C9]/30",
+      tape: "bg-[#FFF8FB]/80"
     }, {
-      // Amber
-      bg: "bg-[#F0F4C3] dark:bg-[#E6EE9C] text-[#2C1A14]",
-      border: "border-[#AFB42B]/40",
-      tape: "bg-emerald-100/80"
+      bg: "bg-[#EEF9F1] dark:bg-[#CFE7D3] text-[#2C1A14]",
+      border: "border-[#B9D8C0]/30",
+      tape: "bg-[#FAFFFB]/80"
     }, {
-      // Lime/Mint
-      bg: "bg-[#FFE0B2] dark:bg-[#FFCC80] text-[#2C1A14]",
-      border: "border-[#FB8C00]/40",
-      tape: "bg-orange-100/80"
-    } // Peach
+      bg: "bg-[#F6F1EA] dark:bg-[#D9C4B1] text-[#2C1A14]",
+      border: "border-[#D1B9A1]/30",
+      tape: "bg-[#FCFAF7]/80"
+    }
   ];
 
   const rotations = [
@@ -98,7 +95,7 @@ export default function ReviewsSection() {
             scale: 1.05
           }} whileTap={{
             scale: 0.95
-          }} onClick={() => setIsModalOpen(true)} className="px-2 py-3.5 rounded-2xl bg-[#2C1A14] dark:bg-[#C67C4E] hover:bg-[#3D291F] dark:hover:bg-[#A35D31] text-white dark:text-[#160F0B] font-semibold text-xs uppercase tracking-wider shadow-lg flex items-center gap-2 transition shrink-0">
+          }} onClick={() => setIsModalOpen(true)} className="px-2 py-3.5 rounded-2xl  border border-amber-950 hover:bg-[#3D291F] dark:hover:bg-[#A35D31] text-amber-950 hover:text-white font-semibold text-xs uppercase tracking-wider shadow-lg flex items-center gap-2 transition shrink-0">
           <MessageSquarePlus className="w-4 h-4"/>
           Pin a Review Note
         </motion.button>
