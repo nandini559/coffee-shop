@@ -27,67 +27,42 @@ export default function MenuSection() {
     return matchesCategory && matchesSearch && matchesTag;
   });
 
-  return (<section id="menu" className="py-24 bg-[#FDFBF7] dark:bg-[#160F0B] text-[#2C1A14] dark:text-white relative">
+  return (<section id="menu" className="py-20 sm:py-24 lg:py-28 bg-transparent text-[#2C1A14] dark:text-white relative">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       {/* Section Title */}
-      <div className="text-center max-w-3xl mx-auto mb-8">
-        {/* <span className="text-xs font-extrabold uppercase tracking-widest text-[#2C1A14] dark:text-[#F0C085] bg-white dark:bg-[#F0C085]/10 px-4 py-1.5 rounded-full border border-[#E5DCD3] dark:border-amber-400/30 shadow-sm">
-            Artisanal Selection
-          </span> */
-        }
-        <h2 className="text-4xl sm:text-5xl font-serif font-bold text-[#2C1A14] dark:text-white mt-3">
+      <div className="text-center max-w-3xl mx-auto mb-6 lg:mb-8">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#2C1A14] dark:text-white mt-2">
           {"Our "}
           <span className="text-[#C67C4E] dark:text-[#F0C085]">Menu</span>
         </h2>
-        <p className="mt-3 text-[#5C4337] dark:text-coffee-200 text-base font-medium">
+        <p className="mt-2 text-[#5C4337] dark:text-coffee-200 text-xs sm:text-sm lg:text-base font-medium">
           Explore our ethically harvested single-origin brews, home-made foams, and freshly baked pastries.
         </p>
       </div>
 
-      {/* Search Bar & Tag Filters */}
-      <div className="max-w-xl mx-auto mb-3 space-y-4">
+      {/* Search Bar */}
+      <div className="max-w-xl mx-auto mb-4 space-y-4">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#855E4C] dark:text-coffee-400"/>
-          <input type="text" placeholder="Search espresso, cold brew, matcha, sourdough, croissant..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white dark:bg-[#160F0B] border border-[#E5DCD3] dark:border-coffee-800 focus:border-[#C67C4E] text-[#2C1A14] dark:text-white text-sm font-medium placeholder-[#855E4C] focus:outline-none transition shadow-sm"/>{" "}
+          <input type="text" placeholder="Search espresso, cold brew, matcha, sourdough, croissant..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/90 dark:bg-[#160F0B]/90 border border-[#E5DCD3] dark:border-coffee-800 focus:border-[#C67C4E] text-[#2C1A14] dark:text-white text-xs sm:text-sm font-medium placeholder-[#855E4C] focus:outline-none transition shadow-sm backdrop-blur-md"/>{" "}
           {
             searchQuery && (<button onClick={() => setSearchQuery("")} className="absolute right-4 top-1/2 -translate-y-1/2 text-coffee-400 hover:text-coffee-900">
               <X className="w-4 h-4"/>
             </button>)
           }
         </div>
-
-        {/* Filter Tags */}
-        {/* <div className="flex flex-wrap items-center justify-center gap-2">
-          <span className="text-xs font-extrabold text-[#855E4C] dark:text-coffee-400 mr-1 uppercase tracking-wider">
-            Dietary:
-          </span>
-          {
-            tagsList.map(tag => (<button key={tag} onClick={() => setSelectedTag(prev => (
-                prev === tag
-                ? ""
-                : tag))
-} className={`px-3 py-1 rounded-full text-xs font-bold border transition ${
-              selectedTag === tag
-                ? "bg-[#2C1A14] dark:bg-[#C67C4E] text-white dark:text-[#160F0B] border-[#2C1A14]"
-                : "bg-white dark:bg-coffee-950/60 border-[#E5DCD3] dark:border-coffee-800 text-[#3D291F] dark:text-coffee-300 hover:border-[#C67C4E]"}`}>
-              {tag}
-            </button>))
-          }
-        </div> */
-        }
       </div>
 
       {/* Category Tabs */}
-
-      <div className="flex items-center justify-center gap-2 mb-10 flex-nowrap">
+      <div className="flex items-center justify-center gap-2 mb-8 sm:mb-10 flex-wrap sm:flex-nowrap overflow-x-auto py-1">
         {
           CATEGORIES.map(cat => {
             const isActive = activeCategory === cat.id;
 
-            return (<button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`relative px-3 py-1.5 rounded-lg text-[11px] font-semibold uppercase tracking-wide transition-all duration-300 ${
+            return (<button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`relative px-3.5 py-1.5 rounded-lg text-[11px] font-semibold uppercase tracking-wide transition-all duration-300 ${
               isActive
                 ? "text-white dark:text-[#160F0B]"
-                : "bg-white dark:bg-coffee-950/80 border border-[#E5DCD3] dark:border-coffee-800 text-[#2C1A14] dark:text-coffee-200 hover:border-[#C67C4E]"}`}>
+                : "bg-white/80 dark:bg-coffee-950/80 border border-[#E5DCD3] dark:border-coffee-800 text-[#2C1A14] dark:text-coffee-200 hover:border-[#C67C4E]"}`}>
               {
                 isActive && (<motion.div layoutId="activeCategoryPill" transition={{
                     type: "spring",
@@ -119,7 +94,7 @@ export default function MenuSection() {
               Clear All Filters
             </button>
           </div>)
-          : (<motion.div layout="layout" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          : (<motion.div layout="layout" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             <AnimatePresence>
               {
                 filteredItems.map(item => {
@@ -136,7 +111,7 @@ export default function MenuSection() {
                       duration: 0.3
                     }} className="glass-card rounded-3xl overflow-hidden border border-[#E5DCD3] dark:border-coffee-800 hover:border-[#C67C4E] dark:hover:border-amber-400/30 flex flex-col justify-between group transition-all duration-300">
                     <div>
-                      <div className="relative h-52 overflow-hidden">
+                      <div className="relative h-44 sm:h-48 overflow-hidden">
                         <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"></img>
                         <div className="absolute inset-0 bg-gradient-to-t from-[#160F0B]/80 via-transparent to-transparent opacity-80"/>{" "}
                         <motion.button whileHover={{
