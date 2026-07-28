@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useCart} from "../context/CartContext";
 import {Coffee, Mail, Heart} from "lucide-react";
 
-export default function Footer() {
+export default function Footer({onOpenReservation}) {
   const {addToast} = useCart();
   const [email, setEmail] = useState("");
 
@@ -105,7 +105,7 @@ export default function Footer() {
             </li>
           </ul>
 
-          <button className="inline-flex items-center  px-5 py-2 rounded-xl bg-[#2C1A14] dark:bg-[#C67C4E] text-white dark:text-[#160F0B] font-semibold text-xs uppercase tracking-wider shadow-md hover:bg-[#3D291F] dark:hover:bg-[#A35D31] hover:scale-105 transition-all duration-300">
+          <button onClick={onOpenReservation} className="inline-flex items-center  px-5 py-2 rounded-xl bg-[#2C1A14] dark:bg-[#C67C4E] text-white dark:text-[#160F0B] font-semibold text-xs uppercase tracking-wider shadow-md hover:bg-[#3D291F] dark:hover:bg-[#A35D31] hover:scale-105 transition-all duration-300">
             Reserve a Table
           </button>
         </div>

@@ -48,13 +48,13 @@ export default function Hero({onOpenReservation}) {
     }
   };
 
-  return (<section className="relative min-h-[90vh] lg:min-h-screen pt-28 pb-16 lg:py-24 flex items-center justify-center bg-transparent text-[#2C1A14] dark:text-white">
+  return (<section className="relative min-h-[90vh] lg:min-h-screen pt-28 pb-16 lg:py-24 flex items-center justify-center bg-transparent text-[#2C1A14] dark:text-white overflow-hidden">
     {/* BACKGROUND WAVE SPLIT (Cream Left / Dark Brown Right) */}
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {/* Right side dark coffee background shape */}
-      <div className="absolute top-0 right-0 w-full lg:w-[55%] h-full bg-[#2C1A14]/90 dark:bg-[#1A0E0A]/95 rounded-l-[100px] lg:rounded-l-[200px] shadow-2xl transition-all duration-500"/>{" "}
+      {/* Right side dark coffee background shape (Desktop only) */}
+      <div className="hidden lg:block absolute top-0 right-0 w-[55%] h-full bg-[#2C1A14]/90 dark:bg-[#1A0E0A]/95 rounded-l-[200px] shadow-2xl transition-all duration-500"/>{" "}
       {/* Decorative background glow */}
-      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-[#C67C4E]/20 dark:bg-amber-500/10 blur-[130px] rounded-full"/>
+      <div className="absolute top-1/3 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-[#C67C4E]/20 dark:bg-amber-500/10 blur-[130px] rounded-full"/>
     </div>
 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
@@ -69,26 +69,26 @@ export default function Hero({onOpenReservation}) {
           }} transition={{
             duration: 0.7,
             ease: "easeOut"
-          }} className="lg:col-span-6 space-y-5 lg:space-y-6 text-left pr-0 lg:pr-4">
+          }} className="lg:col-span-6 space-y-5 lg:space-y-6 text-center lg:text-left flex flex-col items-center lg:items-start pr-0 lg:pr-4">
           {/* Giant Main Display Headline */}
-          <div className="flex flex-col gap-1 sm:gap-2">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-sans font-black tracking-tight leading-[1.1] text-[#2C1A14] dark:text-white pb-1">
+          <div className="flex flex-col items-center lg:items-start gap-1 sm:gap-2">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-sans font-black tracking-tight leading-[1.1] text-[#2C1A14] dark:text-white pb-1">
               Awaken Your
             </h1>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-sans font-black tracking-tight leading-[1.1] bg-gradient-to-r from-[#C67C4E] via-[#A35D31] to-[#855E4C] dark:from-[#F0C085] dark:to-[#C67C4E] bg-clip-text text-transparent pb-1">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-sans font-black tracking-tight leading-[1.1] bg-gradient-to-r from-[#C67C4E] via-[#A35D31] to-[#855E4C] dark:from-[#F0C085] dark:to-[#C67C4E] bg-clip-text text-transparent pb-1">
               Senses with
             </h1>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-sans font-black tracking-tight leading-[1.1] bg-gradient-to-r from-[#C67C4E] via-[#A35D31] to-[#855E4C] dark:from-[#F0C085] dark:to-[#C67C4E] bg-clip-text text-transparent pb-1">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-sans font-black tracking-tight leading-[1.1] bg-gradient-to-r from-[#C67C4E] via-[#A35D31] to-[#855E4C] dark:from-[#F0C085] dark:to-[#C67C4E] bg-clip-text text-transparent pb-1">
               Every Sip
             </h1>
           </div>
 
           {/* Tagline & Subtitle */}
-          <div className="space-y-1.5">
-            <h2 className="text-lg sm:text-2xl font-serif font-bold text-[#2C1A14] dark:text-amber-200">
+          <div className="space-y-1.5 flex flex-col items-center lg:items-start">
+            <h2 className="text-base sm:text-2xl font-serif font-bold text-[#2C1A14] dark:text-amber-200">
               Cool. Smooth. Perfect.
             </h2>
-            <p className="text-xs sm:text-sm lg:text-base text-[#5C4337] dark:text-coffee-200 font-medium max-w-md leading-relaxed">
+            <p className="text-xs sm:text-sm lg:text-base text-[#5C4337] dark:text-coffee-200 font-medium max-w-md leading-relaxed mx-auto lg:mx-0">
               Chill out with every sip – artisanal cold coffee, slow-brewed for 20 hours for your ultimate refreshment.
             </p>
           </div>

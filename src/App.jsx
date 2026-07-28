@@ -19,6 +19,7 @@ import ReservationModal from "./components/ReservationModal";
 import AuthModal from "./components/AuthModal";
 import ToastNotification from "./components/ToastNotification";
 import Footer from "./components/Footer";
+import FloatingButtons from "./components/FloatingButtons";
 
 export default function App() {
   const [isReservationOpen, setIsReservationOpen] = useState(false);
@@ -39,8 +40,11 @@ export default function App() {
             <ContactSection onOpenReservation={() => setIsReservationOpen(true)}/>
           </main>
 
-          <Footer/> {/* Interactive Floating Chatbot */}
+          <Footer onOpenReservation={() => setIsReservationOpen(true)}/> {/* Interactive Floating Chatbot */}
           {/* <Chatbot /> */}
+
+          {/* Floating Action Buttons: Scroll to Top, WhatsApp & AI Chatbot */}
+          <FloatingButtons onOpenReservation={() => setIsReservationOpen(true)}/>
 
           {/* Modals & Drawers */}
           <CartDrawer/>

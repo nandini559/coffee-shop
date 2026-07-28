@@ -67,7 +67,7 @@ export default function ReviewsSection() {
     addToast("Thank you! Your handwritten review note has been posted! ⭐", "success");
   };
 
-  return (<section id="reviews" className="py-16 sm:py-20 lg:py-24 relative bg-transparent text-[#2C1A14] dark:text-white flex flex-col justify-center">
+  return (<section id="reviews" className="py-16 sm:py-20 lg:py-24 relative bg-transparent text-[#2C1A14] dark:text-white flex flex-col justify-center overflow-hidden">
     {/* Subtle Background Pattern */}
     <div className="absolute inset-0 bg-[radial-gradient(#C67C4E_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none"/>
 

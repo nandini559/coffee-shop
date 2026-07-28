@@ -1,7 +1,7 @@
 import { MENU_ITEMS } from '../data/menuData';
 import { CAFE_INFO } from '../data/faqData';
 
-// --- BUILD YOUR OWN COFFEE AI CONFIG & LOGIC ---
+// --- BUILD YOUR OWN COFFEE AI CONFIG & LOGIC EXPORTS ---
 
 export const COFFEE_BASES = [
   { id: 'espresso-single', name: 'Single Shot Espresso', basePrice: 3.50, color: '#2b1b17', density: 0.7 },
@@ -51,7 +51,245 @@ export const WHIPPED_CREAM = [
   { id: 'chocolate-foam', name: 'Dark Cocoa Cold Foam', price: 0.85, color: '#6e473b' },
 ];
 
-// Generate dynamic AI Coffee details based on choices
+// Local Gemma 4 Model Endpoint Configuration (Ollama / Local LLM REST API)
+const OLLAMA_CHAT_ENDPOINT = 'http://localhost:11434/api/chat';
+const OLLAMA_COMPLETIONS_ENDPOINT = 'http://localhost:11434/v1/chat/completions';
+const LOCAL_MODEL_NAMES = ['gemma4', 'gemma:4b', 'gemma:latest', 'gemma'];
+
+// Exact Refusal Message required for any non-café questions
+export const EXACT_REFUSAL_MESSAGE = "Sorry, I can only help with café-related questions.";
+
+// Build System Context for Gemma 4
+const CAFE_SYSTEM_PROMPT = `You are Oak & Bean's official AI Barista.
+
+YOUR STRICT DOMAIN & BOUNDARIES:
+You MUST ONLY answer questions related to Oak & Bean café, including:
+- Menu items (coffee, teas, beverages, bakery, desserts, light bites)
+- Coffee recommendations, food and beverages
+- Prices, ingredient details, allergens, dietary options (vegan, gluten-free, nut-free, organic)
+- Opening hours, café location, address, directions, parking, seating capacity, Wi-Fi speed, power outlets
+- Table reservations, seating availability, booking policies
+- Contact information (phone: ${CAFE_INFO.phone}, email: ${CAFE_INFO.email})
+- Events, active special offers and discount promo codes (OAK15: 15% off, BREW20: 20% off custom coffee, MORNINGCOMBO: free pastry)
+- Delivery and takeaway, express pickup, delivery partners (UberEats, DoorDash, GrubHub)
+- Payment methods, loyalty rewards program, and general café FAQs
+
+CRITICAL INSTRUCTION:
+If the user asks ANY question that is NOT related to the café (such as general knowledge, coding, programming, mathematics, science, politics, news, personal advice, entertainment, history, etc.), YOU MUST NOT ANSWER IT. Instead, YOU MUST ALWAYS REPLY WITH EXACTLY THIS RESPONSE AND NOTHING ELSE:
+"${EXACT_REFUSAL_MESSAGE}"
+
+CAFÉ INFORMATION:
+Name: ${CAFE_INFO.name}
+Address: ${CAFE_INFO.address}
+Phone: ${CAFE_INFO.phone}
+Email: ${CAFE_INFO.email}
+Hours: Weekdays (${CAFE_INFO.hours.weekdays}), Weekends (${CAFE_INFO.hours.weekends}), Holidays (${CAFE_INFO.hours.holidays})
+Seating: Total ${CAFE_INFO.seating.totalCapacity} (Indoor ${CAFE_INFO.seating.indoorSeats}, Patio ${CAFE_INFO.seating.patioSeats}), Wi-Fi: ${CAFE_INFO.seating.wifiSpeed}
+Delivery: Express 15-min delivery within 3 miles ($2.99 fee, FREE on orders > $25). Express pickup available.
+Active Promo Codes: OAK15 (15% off orders > $10), BREW20 (20% off custom coffee builder), MORNINGCOMBO (Free pastry with large latte)
+
+MENU ITEMS:
+${MENU_ITEMS.map(i => `- ${i.name} ($${i.price.toFixed(2)}): ${i.description}. Ingredients: ${i.ingredients.join(', ')}. Allergens: ${i.allergens.join(', ')}. Category: ${i.category}. Tags: ${i.tags.join(', ')}`).join('\n')}`;
+
+// Domain relevance guardrail check
+export function isCafeRelatedQuery(query) {
+  const q = query.toLowerCase().trim();
+  
+  const nonCafeKeywords = [
+    'python', 'javascript', 'react', 'java', 'c++', 'code', 'coding', 'script', 'function', 'class', 'html', 'css',
+    'capital of', 'who is', 'president of', 'math', 'calculate', 'quantum', 'physics', 'chemistry', 'biology',
+    'politics', 'election', 'movie', 'actor', 'song', 'lyrics', 'crypto', 'bitcoin', 'stock market', 'weather in',
+    'tell me a joke', 'who won', 'game of thrones', 'formula', 'algebra', 'solve', 'essay'
+  ];
+
+  for (const word of nonCafeKeywords) {
+    if (q.includes(word)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+// Query local Gemma 4 model via Ollama / REST API
+export async function queryGemmaLocalModel(userMessage, chatHistory = []) {
+  if (!isCafeRelatedQuery(userMessage)) {
+    return {
+      text: EXACT_REFUSAL_MESSAGE,
+      source: 'guardrail'
+    };
+  }
+
+  const formattedMessages = [
+    { role: 'system', content: CAFE_SYSTEM_PROMPT },
+    ...chatHistory.slice(-6).map(m => ({
+      role: m.sender === 'user' ? 'user' : 'assistant',
+      content: m.text
+    })),
+    { role: 'user', content: userMessage }
+  ];
+
+  for (const modelName of LOCAL_MODEL_NAMES) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+      const res = await fetch(OLLAMA_CHAT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: modelName,
+          messages: formattedMessages,
+          stream: false,
+          options: { temperature: 0.3 }
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.message && data.message.content) {
+          const content = data.message.content.trim();
+          if (content.toLowerCase().includes('python') || content.toLowerCase().includes('programming') || content.toLowerCase().includes('capital of')) {
+            return { text: EXACT_REFUSAL_MESSAGE, source: 'guardrail' };
+          }
+          return processResponseWithItemMatching(content, userMessage);
+        }
+      }
+    } catch (e) {
+    }
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+      const res = await fetch(OLLAMA_COMPLETIONS_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: modelName,
+          messages: formattedMessages,
+          temperature: 0.3
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.choices && data.choices[0] && data.choices[0].message) {
+          const content = data.choices[0].message.content.trim();
+          return processResponseWithItemMatching(content, userMessage);
+        }
+      }
+    } catch (e) {
+    }
+  }
+
+  return processUserChatQuery(userMessage);
+}
+
+function processResponseWithItemMatching(responseText, originalQuery) {
+  const q = originalQuery.toLowerCase();
+  let matchingItems = [];
+
+  if (q.includes('dessert') || q.includes('pastry') || q.includes('cake') || q.includes('sweet')) {
+    matchingItems = MENU_ITEMS.filter(i => i.category === 'pastry' || i.category === 'dessert').slice(0, 3);
+  } else if (q.includes('special') || q.includes('recommend') || q.includes('bestseller') || q.includes('popular')) {
+    matchingItems = MENU_ITEMS.filter(i => i.popular).slice(0, 3);
+  } else {
+    matchingItems = MENU_ITEMS.filter(item => 
+      q.includes(item.name.toLowerCase()) || 
+      item.ingredients.some(ing => q.includes(ing.toLowerCase()))
+    ).slice(0, 3);
+  }
+
+  return {
+    text: responseText,
+    items: matchingItems.length > 0 ? matchingItems : null,
+    source: 'gemma4'
+  };
+}
+
+export function processUserChatQuery(query) {
+  const q = query.toLowerCase().trim();
+
+  if (!isCafeRelatedQuery(query)) {
+    return {
+      text: EXACT_REFUSAL_MESSAGE,
+      source: 'guardrail'
+    };
+  }
+
+  if (q.includes('dessert') || q.includes('pastry') || q.includes('cake') || q.includes('bakery') || q.includes('croissant') || q.includes('sweet') || q.includes('food')) {
+    const pastries = MENU_ITEMS.filter(item => item.category === 'pastry' || item.category === 'dessert');
+    return {
+      text: `🥐 **Fresh Artisanal Desserts & Pastries:**\n\nOur bakery counter is updated daily with freshly baked French pastries, vegan sourdough treats, and single-origin chocolate Danish:`,
+      items: pastries.slice(0, 3)
+    };
+  }
+
+  if (q.includes('best seller') || q.includes('popular') || q.includes('recommend') || q.includes('special') || q.includes('top drink') || q.includes('coffee') || q.includes('menu')) {
+    const popularItems = MENU_ITEMS.filter(item => item.popular);
+    return {
+      text: `☕ **Oak & Bean Today's Bestsellers & Recommendations:**\n\nHere are our top-rated signature drinks handcrafted with 20-hour cold brew & direct-trade Arabica beans:`,
+      items: popularItems.slice(0, 3)
+    };
+  }
+
+  if (q.includes('vegan') || q.includes('gluten') || q.includes('dairy-free') || q.includes('allergen') || q.includes('nut-free') || q.includes('dietary') || q.includes('ingredient')) {
+    const veganItems = MENU_ITEMS.filter(i => i.tags.some(t => t.toLowerCase().includes('vegan')) || i.category === 'vegan');
+    return {
+      text: `🌿 **Dietary Options & Ingredients:**\n\nWe offer Organic Oat, Almond, Coconut, & Pistachio milk alternatives, along with gluten-free baked goods:`,
+      items: veganItems.slice(0, 3)
+    };
+  }
+
+  if (q.includes('address') || q.includes('location') || q.includes('where') || q.includes('directions') || q.includes('map') || q.includes('parking')) {
+    return {
+      text: `📍 **Oak & Bean Store Location & Parking:**\n\n• **Address:** ${CAFE_INFO.address}\n• **Parking:** Free 2-hour underground guest parking behind the cafe.\n• **Phone:** ${CAFE_INFO.phone}\n• **Directions:** Located in the Coffee District near Crema Park!`
+    };
+  }
+
+  if (q.includes('hour') || q.includes('open') || q.includes('time') || q.includes('schedule') || q.includes('close')) {
+    return {
+      text: `⏰ **Opening Hours:**\n\n• **Weekdays:** ${CAFE_INFO.hours.weekdays}\n• **Weekends:** ${CAFE_INFO.hours.weekends}\n• **Holidays:** ${CAFE_INFO.hours.holidays}\n\n🟢 *Currently open with seating available!*`
+    };
+  }
+
+  if (q.includes('price') || q.includes('cost') || q.includes('expensive') || q.includes('menu price') || q.includes('how much') || q.includes('deal') || q.includes('discount') || q.includes('offer')) {
+    return {
+      text: `💵 **Pricing & Offers:**\n\n• **Brews & Specialty Drinks:** ${CAFE_INFO.pricing.coffeeRange}\n• **Fresh Bakery:** ${CAFE_INFO.pricing.pastryRange}\n• **Average Order:** ${CAFE_INFO.pricing.averagePerPerson}\n\n✨ *Use code **OAK15** for 15% off your first order!*`
+    };
+  }
+
+  if (q.includes('seat') || q.includes('table') || q.includes('reserve') || q.includes('booking') || q.includes('wifi') || q.includes('event') || q.includes('outlet')) {
+    return {
+      text: `🪑 **Seating, Reservations & Events:**\n\n• **Available Seats:** ${CAFE_INFO.seating.currentAvailable} open seats out of ${CAFE_INFO.seating.totalCapacity}.\n• **Wi-Fi:** Free 1 Gbps High-Speed Fiber.\n• **Outlets:** Power outlets at all tables & counter bar.\n\nClick **Reserve Table** on our website to book your spot!`
+    };
+  }
+
+  if (q.includes('delivery') || q.includes('takeaway') || q.includes('pickup') || q.includes('ubereats') || q.includes('doordash')) {
+    return {
+      text: `🛵 **Delivery & Takeaway:**\n\n• **In-House Delivery:** 15-minute delivery within 3 miles ($2.99 fee, FREE over $25!).\n• **Express Pickup / Takeaway:** Order online and pick up at our counter bar without waiting.`
+    };
+  }
+
+  if (q.includes('payment') || q.includes('loyalty') || q.includes('contact') || q.includes('phone') || q.includes('email') || q.includes('card') || q.includes('pay')) {
+    return {
+      text: `💳 **Payment Methods & Contact Info:**\n\n• **Payment Methods:** Apple Pay, Google Pay, Credit/Debit cards, Cash.\n• **Loyalty Program:** Earn 1 point per $1 spent towards free specialty drinks.\n• **Phone:** ${CAFE_INFO.phone}\n• **Email:** ${CAFE_INFO.email}`
+    };
+  }
+
+  return {
+    text: EXACT_REFUSAL_MESSAGE,
+    source: 'guardrail'
+  };
+}
+
 export function calculateCustomCoffee(config) {
   const base = COFFEE_BASES.find(b => b.id === config.base) || COFFEE_BASES[0];
   const milk = MILK_OPTIONS.find(m => m.id === config.milk) || MILK_OPTIONS[0];
@@ -67,7 +305,6 @@ export function calculateCustomCoffee(config) {
     });
   }
 
-  // AI Name Generator Matrix
   const prefix = syrup.id !== 'none' 
     ? syrup.name.replace('Madagascar ', '').replace('Salted Amber ', '').replace('French Wild ', '').replace('Belgian Dark ', '')
     : (milk.id !== 'none' ? milk.name.replace('Organic ', '').replace('Barista ', '').replace('Artisanal ', '').replace('Unsweetened ', '') : 'Artisanal');
@@ -76,11 +313,8 @@ export function calculateCustomCoffee(config) {
   const whipPart = whip.id !== 'none' ? 'Cloud' : 'Mist';
 
   const generatedName = `Oak & Bean ${prefix} ${baseNamePart} ${whipPart}`;
-
-  // Sensory Flavor Profile Description
   const flavorDesc = `A ${sugarLevelDescription(config.sugarLevel)} brew featuring ${base.name.toLowerCase()} blended with ${milk.text.toLowerCase()}. Elevated by ${syrup.flavorNote}${whip.id !== 'none' ? ` and topped with ${whip.name.toLowerCase()}` : ''}.`;
 
-  // Pastry recommendation engine
   let pastryRecommendation = 'Golden Flaky French Butter Croissant';
   if (config.syrup === 'caramel' || config.syrup === 'mocha') {
     pastryRecommendation = 'Artisanal Pistachio Cardamom Danish';
@@ -114,7 +348,6 @@ function sugarLevelDescription(sugarId) {
   }
 }
 
-// AI STORY GENERATOR
 export function generateDrinkStory(drinkName, categoryOrBase = 'Coffee') {
   const stories = [
     `Your ${drinkName} is tailored for a peaceful morning, offering warmth as you dive into your favorite book or creative work.`,
@@ -134,89 +367,4 @@ function hashCode(str) {
     hash |= 0;
   }
   return hash;
-}
-
-// --- CHATBOT KNOWLEDGE BASE & INTENT ENGINE ---
-
-export function processUserChatQuery(query) {
-  const q = query.toLowerCase().trim();
-
-  // 1. BEST SELLERS / POPULAR / RECOMMENDATIONS
-  if (q.includes('best seller') || q.includes('popular') || q.includes('recommend') || q.includes('special') || q.includes('top drink')) {
-    const popularItems = MENU_ITEMS.filter(item => item.popular);
-    return {
-      text: `Here are our **top-rated signature recommendations** at Oak & Bean! Each drink is hand-crafted with direct-trade beans:`,
-      items: popularItems.slice(0, 3)
-    };
-  }
-
-  // 2. VEGAN / GLUTEN FREE / ALLERGENS
-  if (q.includes('vegan') || q.includes('gluten') || q.includes('dairy-free') || q.includes('allergen') || q.includes('nut-free') || q.includes('dietary')) {
-    const veganItems = MENU_ITEMS.filter(i => i.tags.some(t => t.toLowerCase().includes('vegan')) || i.category === 'vegan');
-    return {
-      text: `🌿 We take dietary preferences very seriously! We offer **Organic Oat, Almond, Coconut, & Pistachio milks**, plus 100% gluten-free sourdough and vegan bakery items. Check out these popular choices:`,
-      items: veganItems.slice(0, 3)
-    };
-  }
-
-  // 3. ADDRESS / LOCATION / DIRECTIONS / PARKING
-  if (q.includes('address') || q.includes('location') || q.includes('where') || q.includes('directions') || q.includes('map') || q.includes('parking')) {
-    return {
-      text: `📍 **Oak & Bean Location & Parking:**\n\n• **Address:** ${CAFE_INFO.address}\n• **Parking:** Free 2-hour underground guest parking behind the cafe, plus street parking.\n• **Phone:** ${CAFE_INFO.phone}\n• **Directions:** Located right in the heart of the Coffee District, near Crema Park!`
-    };
-  }
-
-  // 4. OPENING HOURS / TIME / SCHEDULE
-  if (q.includes('hour') || q.includes('open') || q.includes('time') || q.includes('schedule') || q.includes('close')) {
-    return {
-      text: `⏰ **Operating Hours:**\n\n• **Monday – Friday:** ${CAFE_INFO.hours.weekdays}\n• **Saturday & Sunday:** ${CAFE_INFO.hours.weekends}\n• **Holidays:** ${CAFE_INFO.hours.holidays}\n\n🟢 *Status: Open right now with 14 seating spots available!*`
-    };
-  }
-
-  // 5. PRICING / COST / AVERAGE PRICE
-  if (q.includes('price') || q.includes('cost') || q.includes('expensive') || q.includes('menu price') || q.includes('how much')) {
-    return {
-      text: `💵 **Pricing & Value:**\n\n• **Espresso & Coffee:** ${CAFE_INFO.pricing.coffeeRange}\n• **Fresh Pastries & Bites:** ${CAFE_INFO.pricing.pastryRange}\n• **Average Order Value:** ${CAFE_INFO.pricing.averagePerPerson}\n\n✨ *Tip: Use discount code **OAK15** at checkout for 15% off your first online order!*`
-    };
-  }
-
-  // 6. SEATING / RESERVATION / TABLE / WIFI / OUTLETS
-  if (q.includes('seat') || q.includes('table') || q.includes('reserve') || q.includes('wifi') || q.includes('work') || q.includes('outlet')) {
-    return {
-      text: `🪑 **Seating & Ambiance:**\n\n• **Current Live Availability:** ${CAFE_INFO.seating.currentAvailable} seats open out of ${CAFE_INFO.seating.totalCapacity}.\n• **Wi-Fi:** ${CAFE_INFO.seating.wifiSpeed}.\n• **Power Outlets:** Accessible at every booth and counter bar.\n• **Patio:** 15 outdoor pet-friendly seats with heated fire pits.\n\nWant to book a table? Use our **Reservation Modal** at the bottom of the page!`
-    };
-  }
-
-  // 7. OFFERS / DISCOUNTS / PROMO CODES / REWARDS
-  if (q.includes('offer') || q.includes('discount') || q.includes('promo') || q.includes('code') || q.includes('coupon') || q.includes('deal')) {
-    return {
-      text: `🎟️ **Active Exclusive Cafe Offers:**\n\n1. **OAK15** – 15% Off any order over $10\n2. **BREW20** – 20% Off drinks created in our Custom AI Coffee Builder\n3. **MORNINGCOMBO** – Free pastry with any large latte (7 AM – 10 AM)\n\nSimply enter these codes at checkout!`
-    };
-  }
-
-  // 8. DELIVERY / ONLINE ORDER / PICKUP / SHIPPING
-  if (q.includes('delivery') || q.includes('order online') || q.includes('pickup') || q.includes('ubereats') || q.includes('doordash') || q.includes('ship')) {
-    return {
-      text: `🛵 **Online Ordering & Delivery:**\n\n• **Express In-House Delivery:** Delivered to your door in ~15 minutes within 3 miles (Free for orders > $25!).\n• **Express Pickup:** Order on this website, skip the line, and pick up hot at our designated counter bar.\n• **Delivery Partners:** Also live on UberEats, DoorDash, and GrubHub.`
-    };
-  }
-
-  // 9. SEARCH SPECIFIC MENU ITEM MATCH
-  const matchingItem = MENU_ITEMS.find(item => 
-    q.includes(item.name.toLowerCase()) || 
-    item.ingredients.some(ing => q.includes(ing.toLowerCase())) ||
-    q.includes(item.category.toLowerCase())
-  );
-
-  if (matchingItem) {
-    return {
-      text: `Here is details for **${matchingItem.name}** ($${matchingItem.price.toFixed(2)}): ${matchingItem.description}`,
-      items: [matchingItem]
-    };
-  }
-
-  // 10. DEFAULT / FALLBACK SMART ANSWER
-  return {
-    text: `I'm happy to help you with anything at Oak & Bean! You can ask me about:\n\n• Our artisanal coffee menu & ingredients\n• Vegan & allergen options\n• Opening hours, address & directions\n• Dynamic pricing & discount promo codes\n• Seating availability & table reservations\n• Online ordering & 15-min delivery!`
-  };
 }

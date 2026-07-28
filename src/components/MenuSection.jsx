@@ -56,7 +56,7 @@ export default function MenuSection() {
       </div>
 
       {/* Category Tabs */}
-      <div className="flex items-center justify-center gap-2 mb-8 sm:mb-10 flex-wrap sm:flex-nowrap overflow-x-auto py-1">
+      <div className="flex items-center justify-start sm:justify-center gap-2 mb-8 sm:mb-10 overflow-x-auto py-2 px-1 max-w-full no-scrollbar">
         {
           CATEGORIES.map(cat => {
             const isActive = activeCategory === cat.id;
