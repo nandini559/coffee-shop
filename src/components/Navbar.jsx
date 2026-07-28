@@ -102,7 +102,7 @@ export default function Navbar({onOpenReservation}) {
       </a>
 
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex items-center gap-8">
+      <nav className="hidden md:flex items-center gap-12">
         {
           navLinks.map((link, index) => {
             const isLeftSide = index < 3;
@@ -111,13 +111,13 @@ export default function Navbar({onOpenReservation}) {
                 y: -2
               }} transition={{
                 duration: 0.2
-              }} className={`relative text-xs font-extrabold uppercase tracking-wider transition-all duration-500 ease-in-out
-          ${
+              }} className={`relative text-[11px] font-extrabold uppercase tracking-wider transition-all duration-300
+${
               scrolled
                 ? "text-[#3D291F] dark:text-coffee-100 hover:text-[#C67C4E] dark:hover:text-[#F0C085]"
                 : isLeftSide
-                  ? "text-[#2C1A14] hover:text-[#C67C4E]"
-                  : "text-[#F8E6D3] hover:text-white"}`}>
+                  ? "bg-gradient-to-r from-[#2C1A14] via-[#6F4E37] via-[#A67C52] to-[#D4B08C] bg-clip-text text-transparent drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)] hover:from-[#3D291F] hover:via-[#A35D31] hover:to-[#E8C7A5]"
+                  : "bg-gradient-to-r from-[#F5E6D3] via-[#D4B08C] via-[#A67C52] to-[#6F4E37] bg-clip-text text-transparent drop-shadow-[0_1px_2px_rgba(0,0,0,0.45)] hover:from-[#FFF8F2] hover:via-[#E8C7A5] hover:to-[#8B5E3C]"}`}>
               {link.name}
 
               {/* Animated underline */}

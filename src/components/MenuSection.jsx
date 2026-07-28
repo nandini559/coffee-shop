@@ -33,7 +33,9 @@ export default function MenuSection() {
       <div className="text-center max-w-3xl mx-auto mb-6 lg:mb-8">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#2C1A14] dark:text-white mt-2">
           {"Our "}
-          <span className="text-[#C67C4E] dark:text-[#F0C085]">Menu</span>
+          <span className="bg-gradient-to-r from-[#C67C4E] via-[#A35D31] to-[#855E4C] dark:from-[#F0C085] dark:to-[#C67C4E] bg-clip-text text-transparent">
+            Menu
+          </span>
         </h2>
         <p className="mt-2 text-[#5C4337] dark:text-coffee-200 text-xs sm:text-sm lg:text-base font-medium">
           Explore our ethically harvested single-origin brews, home-made foams, and freshly baked pastries.
@@ -122,7 +124,7 @@ export default function MenuSection() {
                           <ShoppingBag className="w-4 h-4"/>
                           Add to Order
                         </motion.button>
-                        <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                        {/* <div className="absolute bottom-3 left-4 flex items-center gap-2">
                           <span className="text-xs font-extrabold text-white dark:text-[#F0C085] flex items-center gap-1 bg-[#160F0B]/80 px-2.5 py-1 rounded-full border border-white/20">
                             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400"/>{" "}
                             {item.rating}
@@ -131,7 +133,8 @@ export default function MenuSection() {
                             ({item.reviewsCount}
                             reviews)
                           </span>
-                        </div>
+                        </div> */
+                        }
                       </div>
 
                       <div className="p-6">

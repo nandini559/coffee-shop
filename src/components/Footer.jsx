@@ -1,14 +1,6 @@
 import React, {useState} from "react";
 import {useCart} from "../context/CartContext";
-import {
-  Coffee,
-  Mail,
-  Instagram,
-  Facebook,
-  Twitter,
-  Heart,
-  ArrowUp
-} from "lucide-react";
+import {Coffee, Mail, Heart} from "lucide-react";
 
 export default function Footer() {
   const {addToast} = useCart();
@@ -41,53 +33,24 @@ export default function Footer() {
             Artisanal coffee craft elevated by artificial intelligence. Ethically harvested direct-trade single origin beans, micro-foams, and custom flavor profiling.
           </p>
 
-          <div className="flex gap-3 pt-2">
-            <a href="#" className="p-2.5 rounded-xl bg-white dark:bg-coffee-900 border border-[#E5DCD3] dark:border-coffee-800 text-[#2C1A14] dark:text-[#F0C085] hover:scale-110 transition shadow-sm">
-              <Instagram className="w-4 h-4"/>
+          <div className="flex items-center gap-4 pt-3">
+            {/* Instagram */}
+            <a href="https://instagram.com/your_username" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="group flex  items-center justify-center rounded-full  shadow-md hover:shadow-lg hover:-translate-y-1 hover:border-pink-500 transition-all duration-300">
+              <img src="/asset/insta2.webp" alt="Instagram" className="w-7 h-7 object-contain group-hover:scale-110 transition-transform duration-300"/>
             </a>
-            <a href="#" className="p-2.5 rounded-xl bg-white dark:bg-coffee-900 border border-[#E5DCD3] dark:border-coffee-800 text-[#2C1A14] dark:text-[#F0C085] hover:scale-110 transition shadow-sm">
-              <Facebook className="w-4 h-4"/>
+
+            {/* Facebook */}
+            <a href="https://facebook.com/your_page" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="group flex  items-center justify-center rounded-full  shadow-md hover:shadow-lg hover:-translate-y-1 hover:border-pink-500 transition-all duration-300 p-1">
+              {" "}
+              <img src="/asset/fb2.webp" alt="Facebook" className="w-7 h-7 object-contain group-hover:scale-110 transition-transform duration-300"/>
             </a>
-            <a href="#" className="p-2.5 rounded-xl bg-white dark:bg-coffee-900 border border-[#E5DCD3] dark:border-coffee-800 text-[#2C1A14] dark:text-[#F0C085] hover:scale-110 transition shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                <path d="M18.901 2H21.99l-6.75 7.714L23.5 22h-6.46l-5.06-6.63L6.18 22H3.09l7.22-8.25L.5 2h6.62l4.57 6.02L18.9 2zM17.8 20h1.79L6.22 3.9H4.3L17.8 20z"/>
-              </svg>
+
+            {/* X */}
+            <a href="https://x.com/your_username" target="_blank" rel="noopener noreferrer" aria-label="X" className="group flex  items-center justify-center rounded-full  shadow-md hover:shadow-lg hover:-translate-y-1 hover:border-pink-500 transition-all duration-300">
+              {" "}
+              <img src="/asset/twitter.jpg" alt="X" className="w-7 h-7 object-contain group-hover:scale-110 transition-transform duration-300"/>
             </a>
           </div>
-        </div>
-
-        <div>
-          <h4 className="text-xs font-extrabold text-[#2C1A14] dark:text-white uppercase tracking-wider mb-4">
-            Navigation
-          </h4>
-          <ul className="space-y-2.5 text-xs font-medium">
-            <li>
-              <a href="#" className="hover:text-[#C67C4E] dark:hover:text-[#F0C085] transition">
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="#menu" className="hover:text-[#C67C4E] dark:hover:text-[#F0C085] transition">
-                Handcrafted Menu
-              </a>
-            </li>
-            {/* <li>
-              <a href="#custom-builder" className="hover:text-[#C67C4E] dark:hover:text-[#F0C085] transition">
-                AI Coffee Builder
-              </a>
-            </li> */
-            }
-            <li>
-              <a href="#about" className="hover:text-[#C67C4E] dark:hover:text-[#F0C085] transition">
-                Our Story & Craft
-              </a>
-            </li>
-            <li>
-              <a href="#reviews" className="hover:text-[#C67C4E] dark:hover:text-[#F0C085] transition">
-                Customer Reviews
-              </a>
-            </li>
-          </ul>
         </div>
 
         <div>
@@ -112,6 +75,39 @@ export default function Footer() {
             </li>
             <li>📞 +1 (800) 555-OAKBEAN</li>
           </ul>
+        </div>
+
+        <div>
+          <h4 className="text-xs font-extrabold text-[#2C1A14] dark:text-white uppercase tracking-wider mb-4">
+            Reservations
+          </h4>
+
+          <ul className="space-y-2 text-xs text-[#5C4337] dark:text-coffee-300 font-medium mb-2">
+            <li>
+              <strong className="text-[#2C1A14] dark:text-white font-bold">
+                Table Booking:
+              </strong>{" "}
+              Available Daily
+            </li>
+
+            <li>
+              <strong className="text-[#2C1A14] dark:text-white font-bold">
+                Advance Notice:
+              </strong>{" "}
+              Recommended for Weekends
+            </li>
+
+            <li>
+              <strong className="text-[#2C1A14] dark:text-white font-bold">
+                Group Size:
+              </strong>{" "}
+              Up to 10 Guests
+            </li>
+          </ul>
+
+          <button className="inline-flex items-center  px-5 py-2 rounded-xl bg-[#2C1A14] dark:bg-[#C67C4E] text-white dark:text-[#160F0B] font-semibold text-xs uppercase tracking-wider shadow-md hover:bg-[#3D291F] dark:hover:bg-[#A35D31] hover:scale-105 transition-all duration-300">
+            Reserve a Table
+          </button>
         </div>
 
         <div>
@@ -147,7 +143,8 @@ export default function Footer() {
 
         <p className="flex items-center gap-1">
           Crafted with{" "}
-          <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500"/>& AI Precision for Coffee Enthusiasts.
+          <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500"/>
+          for Coffee Enthusiasts.
         </p>
       </div>
     </div>

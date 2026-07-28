@@ -15,7 +15,7 @@ export default function GallerySection() {
       <div className="text-center max-w-3xl mx-auto mb-6 lg:mb-8">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#2C1A14] dark:text-white mt-2">
           Life at{" "}
-          <span className="text-[#C67C4E] dark:text-[#F0C085]">
+          <span className="bg-gradient-to-r from-[#C67C4E] via-[#A35D31] to-[#855E4C] dark:from-[#F0C085] dark:to-[#C67C4E] bg-clip-text text-transparent">
             Oak & Bean
           </span>
         </h2>

@@ -19,7 +19,7 @@ export default function FeaturedSection() {
   return (<section id="bestsellers" className="py-16 sm:py-20 lg:py-24 relative text-[#2C1A14] dark:text-white bg-transparent flex flex-col justify-center">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end mb-6 lg:mb-8 gap-3 justify-between">
+      <div className="flex flex-col items-center justify-center mb-6 lg:mb-8 text-center">
         <div className="space-y-2 max-w-2xl">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#2C1A14] dark:text-white tracking-tight">
             Our{" "}
@@ -27,17 +27,11 @@ export default function FeaturedSection() {
               Bestsellers
             </span>
           </h2>
+
           <p className="text-xs sm:text-sm lg:text-base text-[#5C4337] dark:text-coffee-200 font-medium leading-relaxed">
             Explore the iconic roasts, velvety micro-foams, and handcrafted artisanal treats that our coffee lovers return for every single day.
           </p>
         </div>
-
-        <motion.a whileHover={{
-            x: 5
-          }} href="#menu" className="ml-auto inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#2C1A14] dark:text-[#F0C085] hover:text-[#C67C4E] dark:hover:text-[#F8E6D3] bg-white/80 dark:bg-coffee-900/80 px-3.5 py-2 rounded-2xl border border-[#E5DCD3] dark:border-coffee-700 shadow-sm backdrop-blur-md transition-all shrink-0">
-          <span>Explore Full Menu</span>
-          <ArrowRight className="w-4 h-4 text-[#C67C4E]"/>
-        </motion.a>
       </div>
       {/* Bestsellers Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
@@ -105,6 +99,14 @@ export default function FeaturedSection() {
           </motion.div>))
         }
       </div>
+
+      {/* <motion.a whileHover={{
+          x: 5
+        }} href="#menu" className="ml-auto inline-flex place-items-end gap-2 text-xs font-extrabold uppercase tracking-wider text-[#2C1A14] dark:text-[#F0C085] hover:text-[#C67C4E] dark:hover:text-[#F8E6D3] bg-white/80 dark:bg-coffee-900/80 px-3.5 py-2 rounded-2xl border border-[#E5DCD3] dark:border-coffee-700 shadow-sm backdrop-blur-md transition-all shrink-0">
+        <span>Explore Full Menu</span>
+        <ArrowRight className="w-4 h-4 text-[#C67C4E]"/>
+      </motion.a> */
+      }
     </div>
   </section>);
 }

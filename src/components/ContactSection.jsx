@@ -28,7 +28,7 @@ export default function ContactSection({onOpenReservation}) {
       <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 space-y-2">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#2C1A14] dark:text-white">
           Find Us &{" "}
-          <span className="text-[#C67C4E] dark:text-[#F0C085]">
+          <span className="bg-gradient-to-r from-[#C67C4E] via-[#A35D31] to-[#855E4C] dark:from-[#F0C085] dark:to-[#C67C4E] bg-clip-text text-transparent">
             Get in Touch
           </span>
         </h2>
@@ -37,15 +37,15 @@ export default function ContactSection({onOpenReservation}) {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 items-start">
         {/* Left Info Column */}
         <div className="lg:col-span-7 space-y-6">
           {/* Quick Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Address Card */}
-            <div className="glass-card p-5 sm:p-6 rounded-3xl border border-[#E5DCD3] dark:border-coffee-800 space-y-2.5">
-              <div className="p-2.5 rounded-2xl bg-[#2C1A14] dark:bg-[#C67C4E] text-white dark:text-[#160F0B] w-fit shadow-sm">
-                <MapPin className="w-4 h-4 sm:w-5 sm:h-5"/>
+            <div className="glass-card p-4 sm:p-5 rounded-3xl border border-[#E5DCD3] dark:border-coffee-800 space-y-2">
+              <div className="p-2 rounded-2xl bg-[#2C1A14] dark:bg-[#C67C4E] text-white dark:text-[#160F0B] w-fit shadow-sm">
+                <MapPin className="w-4 h-4"/>
               </div>
               <h3 className="text-sm sm:text-base font-serif font-bold text-[#2C1A14] dark:text-white">
                 Cafe Address
@@ -53,15 +53,12 @@ export default function ContactSection({onOpenReservation}) {
               <p className="text-xs text-[#5C4337] dark:text-coffee-300 leading-relaxed font-medium">
                 {CAFE_INFO.address}
               </p>
-              <span className="text-[11px] text-[#C67C4E] dark:text-[#F0C085] font-extrabold block pt-0.5">
-                🅿️ Free 2-hr Guest Parking Available
-              </span>
             </div>
 
             {/* Hours Card */}
-            <div className="glass-card p-5 sm:p-6 rounded-3xl border border-[#E5DCD3] dark:border-coffee-800 space-y-2.5">
-              <div className="p-2.5 rounded-2xl bg-[#2C1A14] dark:bg-[#C67C4E] text-white dark:text-[#160F0B] w-fit shadow-sm">
-                <Clock className="w-4 h-4 sm:w-5 sm:h-5"/>
+            <div className="glass-card p-4 sm:p-5 rounded-3xl border border-[#E5DCD3] dark:border-coffee-800 space-y-2">
+              <div className="p-2 rounded-2xl bg-[#2C1A14] dark:bg-[#C67C4E] text-white dark:text-[#160F0B] w-fit shadow-sm">
+                <Clock className="w-4 h-4"/>
               </div>
               <h3 className="text-sm sm:text-base font-serif font-bold text-[#2C1A14] dark:text-white">
                 Opening Hours
@@ -72,15 +69,15 @@ export default function ContactSection({onOpenReservation}) {
                 Sat–Sun: {CAFE_INFO.hours.weekends}
               </p>
               <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-extrabold block pt-0.5 flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"/>
+                <span className="w-2 h-2 rounded-full bg-emerald-500"/>
                 Currently Open (Seats Available)
               </span>
             </div>
 
             {/* Contact Direct Line */}
-            <div className="glass-card p-5 sm:p-6 rounded-3xl border border-[#E5DCD3] dark:border-coffee-800 space-y-2.5">
-              <div className="p-2.5 rounded-2xl bg-[#2C1A14] dark:bg-[#C67C4E] text-white dark:text-[#160F0B] w-fit shadow-sm">
-                <Phone className="w-4 h-4 sm:w-5 sm:h-5"/>
+            <div className="glass-card p-4 sm:p-5 rounded-3xl border border-[#E5DCD3] dark:border-coffee-800 space-y-2">
+              <div className="p-2 rounded-2xl bg-[#2C1A14] dark:bg-[#C67C4E] text-white dark:text-[#160F0B] w-fit shadow-sm">
+                <Phone className="w-4 h-4"/>
               </div>
               <h3 className="text-sm sm:text-base font-serif font-bold text-[#2C1A14] dark:text-white">
                 Direct Support
@@ -93,9 +90,9 @@ export default function ContactSection({onOpenReservation}) {
             </div>
 
             {/* Table Booking Banner */}
-            <div className="glass-card p-5 sm:p-6 rounded-3xl border border-[#E5DCD3] dark:border-amber-400/30 flex flex-col justify-between space-y-2.5 bg-gradient-to-br from-[#FDFBF7]/90 to-[#F5EFE6]/90 dark:from-coffee-900/90 dark:to-[#160F0B]/90">
-              <div className="p-2.5 rounded-2xl bg-[#2C1A14] dark:bg-[#C67C4E] text-white dark:text-[#160F0B] w-fit shadow-sm">
-                <Calendar className="w-4 h-4 sm:w-5 sm:h-5"/>
+            <div className="glass-card p-4 sm:p-5 rounded-3xl border border-[#E5DCD3] dark:border-amber-400/30 flex flex-col justify-between space-y-2 bg-gradient-to-br from-[#FDFBF7]/90 to-[#F5EFE6]/90 dark:from-coffee-900/90 dark:to-[#160F0B]/90">
+              <div className="p-2 rounded-2xl bg-[#2C1A14] dark:bg-[#C67C4E] text-white dark:text-[#160F0B] w-fit shadow-sm">
+                <Calendar className="w-4 h-4"/>
               </div>
               <div>
                 <h3 className="text-sm sm:text-base font-serif font-bold text-[#2C1A14] dark:text-white">
@@ -105,7 +102,7 @@ export default function ContactSection({onOpenReservation}) {
                   Book your table for work, study, or coffee dates.
                 </p>
               </div>
-              <button onClick={onOpenReservation} className="w-full py-2.5 rounded-xl bg-[#2C1A14] dark:bg-[#C67C4E] hover:bg-[#3D291F] dark:hover:bg-[#A35D31] text-white dark:text-[#160F0B] font-extrabold text-xs uppercase tracking-wider shadow-sm transition">
+              <button onClick={onOpenReservation} className="w-full py-2.5 rounded-xl  text-amber-950 border border-full hover:border-amber-950 hover:text-amber-900 font-extrabold text-xs uppercase tracking-wider shadow-sm transition">
                 Book Table Now
               </button>
             </div>
@@ -113,17 +110,19 @@ export default function ContactSection({onOpenReservation}) {
         </div>
 
         {/* Right Contact Form */}
-        <div className="lg:col-span-5 glass-card p-6 sm:p-7 rounded-3xl border border-[#E5DCD3] dark:border-coffee-800 space-y-4 shadow-xl">
+        <div className="lg:col-span-5 glass-card p-3 sm:p-5 rounded-3xl border border-[#E5DCD3] dark:border-coffee-800 space-y-3 shadow-xl">
           <div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#C67C4E] dark:text-[#F0C085] block">
+            {/* <span className="text-[10px] font-black uppercase tracking-widest text-[#C67C4E] dark:text-[#F0C085] block">
               Direct Contact
-            </span>
-            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#2C1A14] dark:text-white mt-0.5">
+            </span> */
+            }
+            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#2C1A14] dark:text-white ">
               Send Us a Message
             </h3>
-            <p className="text-xs text-[#5C4337] dark:text-coffee-300 mt-0.5 font-medium">
+            {/* <p className="text-xs text-[#5C4337] dark:text-coffee-300 mt-0.5 font-medium">
               Have questions, feedback, or party catering requests?
-            </p>
+            </p> */
+            }
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-3.5">
