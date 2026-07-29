@@ -20,7 +20,7 @@
       linear-gradient(180deg, #FFFDF9 0%, #FAF6F0 25%, #F5EFE6 50%, #E8DCCF 75%, #FDFBF7 100%);
     background-attachment: fixed;
   }
-  button, a, input, select, textarea, [role="button"] {
+  button, a, input, select, textarea, [role="button"], label {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }
@@ -100,16 +100,19 @@
   box-shadow: 0 8px 30px -5px rgba(0, 0, 0, 0.4);
 }
 
-.glass-card:hover {
-  border-color: rgba(198, 124, 78, 0.45);
-  box-shadow: 0 12px 35px -8px rgba(198, 124, 78, 0.15);
-  transform: translateY(-3px);
-}
+/* Media query to ensure hover effects ONLY apply on devices that support true hover (desktop pointer devices) */
+@media (hover: hover) {
+  .glass-card:hover {
+    border-color: rgba(198, 124, 78, 0.45);
+    box-shadow: 0 12px 35px -8px rgba(198, 124, 78, 0.15);
+    transform: translateY(-3px);
+  }
 
-.dark .glass-card:hover {
-  border-color: rgba(240, 192, 133, 0.35);
-  box-shadow: 0 14px 40px -8px rgba(0, 0, 0, 0.6);
-  transform: translateY(-3px);
+  .dark .glass-card:hover {
+    border-color: rgba(240, 192, 133, 0.35);
+    box-shadow: 0 14px 40px -8px rgba(0, 0, 0, 0.6);
+    transform: translateY(-3px);
+  }
 }
 
 /* Custom Scrollbar */
@@ -133,4 +136,3 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #A6735B;
 }
-

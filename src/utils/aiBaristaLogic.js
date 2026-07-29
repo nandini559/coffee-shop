@@ -57,10 +57,10 @@ const OLLAMA_COMPLETIONS_ENDPOINT = 'http://localhost:11434/v1/chat/completions'
 const LOCAL_MODEL_NAMES = ['gemma4', 'gemma:4b', 'gemma:latest', 'gemma'];
 
 // Exact Refusal Message required for any non-café questions
-export const EXACT_REFUSAL_MESSAGE = "Sorry, I can only help with café-related questions.";
+export const EXACT_REFUSAL_MESSAGE = "Sorry, I can only help with questions about our café, menu, drinks, food, reservations, and services.";
 
 // Build System Context for Gemma 4
-const CAFE_SYSTEM_PROMPT = `You are Oak & Bean's official AI Barista.
+const CAFE_SYSTEM_PROMPT = `You are Oak & Bean's knowledgeable, friendly AI Barista assistant. You speak like a warm, experienced barista.
 
 YOUR STRICT DOMAIN & BOUNDARIES:
 You MUST ONLY answer questions related to Oak & Bean café, including:
@@ -93,13 +93,15 @@ ${MENU_ITEMS.map(i => `- ${i.name} ($${i.price.toFixed(2)}): ${i.description}. I
 
 // Domain relevance guardrail check
 export function isCafeRelatedQuery(query) {
+  if (!query || typeof query !== 'string') return false;
   const q = query.toLowerCase().trim();
   
   const nonCafeKeywords = [
     'python', 'javascript', 'react', 'java', 'c++', 'code', 'coding', 'script', 'function', 'class', 'html', 'css',
     'capital of', 'who is', 'president of', 'math', 'calculate', 'quantum', 'physics', 'chemistry', 'biology',
     'politics', 'election', 'movie', 'actor', 'song', 'lyrics', 'crypto', 'bitcoin', 'stock market', 'weather in',
-    'tell me a joke', 'who won', 'game of thrones', 'formula', 'algebra', 'solve', 'essay'
+    'tell me a joke', 'who won', 'game of thrones', 'formula', 'algebra', 'solve', 'essay', 'recipe for pizza',
+    'how to build', 'translate', 'what is the speed of', 'software', 'hardware', 'npm', 'vite'
   ];
 
   for (const word of nonCafeKeywords) {
@@ -197,8 +199,8 @@ function processResponseWithItemMatching(responseText, originalQuery) {
   let matchingItems = [];
 
   if (q.includes('dessert') || q.includes('pastry') || q.includes('cake') || q.includes('sweet')) {
-    matchingItems = MENU_ITEMS.filter(i => i.category === 'pastry' || i.category === 'dessert').slice(0, 3);
-  } else if (q.includes('special') || q.includes('recommend') || q.includes('bestseller') || q.includes('popular')) {
+    matchingItems = MENU_ITEMS.filter(i => i.category === 'bakery' || i.category === 'dessert').slice(0, 3);
+  } else if (q.includes('special') || q.includes('recommend') || q.includes('bestseller') || q.includes('best seller') || q.includes('popular')) {
     matchingItems = MENU_ITEMS.filter(i => i.popular).slice(0, 3);
   } else {
     matchingItems = MENU_ITEMS.filter(item => 
@@ -224,66 +226,148 @@ export function processUserChatQuery(query) {
     };
   }
 
-  if (q.includes('dessert') || q.includes('pastry') || q.includes('cake') || q.includes('bakery') || q.includes('croissant') || q.includes('sweet') || q.includes('food')) {
-    const pastries = MENU_ITEMS.filter(item => item.category === 'pastry' || item.category === 'dessert');
+  // 1. Most expensive coffee / highest price coffee item
+  if (q.includes('most expensive') || q.includes('highest price') || q.includes('costliest') || q.includes('priciest')) {
+    const coffeeItems = MENU_ITEMS.filter(i => i.category === 'espresso' || i.category === 'cold-brew' || i.category === 'matcha-tea');
+    const sorted = [...coffeeItems].sort((a, b) => b.price - a.price);
+    const topItem = sorted[0];
+
     return {
-      text: `🥐 **Fresh Artisanal Desserts & Pastries:**\n\nOur bakery counter is updated daily with freshly baked French pastries, vegan sourdough treats, and single-origin chocolate Danish:`,
+      text: `☕ **Our Most Premium Specialty Drink:**\n\nOur most expensive coffee beverage is the **${topItem.name}** priced at **$${topItem.price.toFixed(2)}** (approx ₹540).\n\n*${topItem.description}* It's crafted with premium ingredients and topped with shaved dark chocolate curls—a true signature indulgence!`,
+      items: [topItem]
+    };
+  }
+
+  // 2. Strongest coffee / highest caffeine / double shot / ristretto / boldest brew
+  if (q.includes('strongest') || q.includes('highest caffeine') || q.includes('boldest') || q.includes('most caffeine') || q.includes('extra strong')) {
+    const nitro = MENU_ITEMS.find(i => i.id === 'item-2'); // Nitro Lavender Cold Foam Brew
+    const latte = MENU_ITEMS.find(i => i.id === 'item-1'); // Oak & Bean Velvet Caramel Latte
+    const flatWhite = MENU_ITEMS.find(i => i.id === 'item-3'); // Flat White
+
+    return {
+      text: `⚡ **Looking for a serious caffeine boost?**\n\nHere are our strongest brews handcrafted for maximum kick:\n\n1. **${nitro.name}** ($${nitro.price.toFixed(2)}) – 20-hour slow-steeped cold brew infused with nitrogen for an intense, silky kick.\n2. **${latte.name}** ($${latte.price.toFixed(2)}) – Features a bold double shot of direct-trade Ethiopian single-origin espresso.\n3. **${flatWhite.name}** ($${flatWhite.price.toFixed(2)}) – Concentrated ristretto shots combined with micro-foamed oat milk.`,
+      items: [nitro, latte, flatWhite]
+    };
+  }
+
+  // 3. Best seller / Most popular coffee
+  if (q.includes('best seller') || q.includes('bestseller') || q.includes('most popular') || q.includes('top seller') || q.includes('crowd favorite')) {
+    const bestSellers = MENU_ITEMS.filter(i => i.popular || i.tags.includes('Best Seller'));
+    
+    return {
+      text: `⭐ **Oak & Bean Crowd Favorites & Bestsellers:**\n\nOur most loved item is the **Oak & Bean Velvet Caramel Latte** ($5.80), featuring direct-trade Ethiopian espresso and house salted caramel. Paired with our 5:00 AM fresh **Golden Flaky French Butter Croissant** ($4.20), it's the ultimate morning ritual!`,
+      items: bestSellers.slice(0, 3)
+    };
+  }
+
+  // 4. Recommendations under ₹300 / $6 / budget cold coffee
+  if (q.includes('under 300') || q.includes('under ₹300') || q.includes('under rs 300') || q.includes('under $6') || q.includes('under 6') || q.includes('cold coffee under')) {
+    // ₹300 is approx $3.60 to $6.00 range
+    const coldItemsUnderBudget = MENU_ITEMS.filter(i => (i.category === 'cold-brew' || i.category === 'matcha-tea' || i.name.toLowerCase().includes('iced') || i.name.toLowerCase().includes('flat white')) && i.price <= 6.5);
+
+    return {
+      text: `🧊 **Cold Coffee & Refreshers under ₹300 ($6.00):**\n\nHere are our top refreshing cold brews and artisanal iced teas crafted within your budget:\n\n1. **Organic Wild Berry Hibiscus Iced Tea** - **$4.80** (approx ₹380)\n2. **Artisanal Golden Oat Flat White** (Iced) - **$5.40** (approx ₹430)\n3. **Nitro Lavender Cold Foam Brew** - **$6.20** (approx ₹490)`,
+      items: coldItemsUnderBudget.slice(0, 3)
+    };
+  }
+
+  // 5. Cheap / Lowest price coffee
+  if (q.includes('cheapest') || q.includes('lowest price') || q.includes('least expensive') || q.includes('budget coffee')) {
+    const sorted = [...MENU_ITEMS].sort((a, b) => a.price - b.price);
+    const cheapDrink = sorted.find(i => i.category === 'espresso' || i.category === 'matcha-tea') || sorted[0];
+
+    return {
+      text: `💰 **Budget-Friendly Pick:**\n\nOur most affordable beverage is the **${cheapDrink.name}** at just **$${cheapDrink.price.toFixed(2)}**! We also offer fresh croissants for **$4.20**.`,
+      items: [cheapDrink]
+    };
+  }
+
+  // 6. Desserts, Pastries, Bakery
+  if (q.includes('dessert') || q.includes('pastry') || q.includes('cake') || q.includes('bakery') || q.includes('croissant') || q.includes('danish') || q.includes('sweet')) {
+    const pastries = MENU_ITEMS.filter(item => item.category === 'bakery' || item.category === 'dessert');
+    return {
+      text: `🥐 **Fresh Artisanal Desserts & Pastries:**\n\nOur bakery counter is updated every morning at 5:00 AM with 27-layer French butter croissants, pistachio cardamom danishes, and vegan treats:`,
       items: pastries.slice(0, 3)
     };
   }
 
-  if (q.includes('best seller') || q.includes('popular') || q.includes('recommend') || q.includes('special') || q.includes('top drink') || q.includes('coffee') || q.includes('menu')) {
-    const popularItems = MENU_ITEMS.filter(item => item.popular);
+  // 7. General Recommendations
+  if (q.includes('recommend') || q.includes('suggestion') || q.includes('what should i get') || q.includes('special')) {
+    const recommended = MENU_ITEMS.filter(item => item.popular);
     return {
-      text: `☕ **Oak & Bean Today's Bestsellers & Recommendations:**\n\nHere are our top-rated signature drinks handcrafted with 20-hour cold brew & direct-trade Arabica beans:`,
-      items: popularItems.slice(0, 3)
+      text: `☕ **Barista Recommendations:**\n\nIf you're in the mood for coffee, I recommend our **Velvet Caramel Latte** ($5.80) or **Nitro Lavender Cold Foam Brew** ($6.20). If you want something caffeine-free, try our **Ceremonial Uji Matcha Latte** ($6.50)!`,
+      items: recommended.slice(0, 3)
     };
   }
 
-  if (q.includes('vegan') || q.includes('gluten') || q.includes('dairy-free') || q.includes('allergen') || q.includes('nut-free') || q.includes('dietary') || q.includes('ingredient')) {
+  // 8. Vegan, Dietary, Allergens, Ingredients
+  if (q.includes('vegan') || q.includes('gluten') || q.includes('dairy-free') || q.includes('allergen') || q.includes('nut-free') || q.includes('dietary') || q.includes('ingredient') || q.includes('calories')) {
     const veganItems = MENU_ITEMS.filter(i => i.tags.some(t => t.toLowerCase().includes('vegan')) || i.category === 'vegan');
     return {
-      text: `🌿 **Dietary Options & Ingredients:**\n\nWe offer Organic Oat, Almond, Coconut, & Pistachio milk alternatives, along with gluten-free baked goods:`,
+      text: `🌿 **Dietary Options & Plant-Based Choices:**\n\nWe offer Organic Oat, Unsweetened Almond, Creamy Coconut, & Roasted Pistachio milk alternatives, alongside 100% vegan sourdough toast and gluten-free pastries:`,
       items: veganItems.slice(0, 3)
     };
   }
 
-  if (q.includes('address') || q.includes('location') || q.includes('where') || q.includes('directions') || q.includes('map') || q.includes('parking')) {
+  // 9. Specific Item lookup by name
+  const matchedItemByName = MENU_ITEMS.find(item => q.includes(item.name.toLowerCase()) || item.name.toLowerCase().split(' ').some(word => word.length > 3 && q.includes(word)));
+  if (matchedItemByName) {
     return {
-      text: `📍 **Oak & Bean Store Location & Parking:**\n\n• **Address:** ${CAFE_INFO.address}\n• **Parking:** Free 2-hour underground guest parking behind the cafe.\n• **Phone:** ${CAFE_INFO.phone}\n• **Directions:** Located in the Coffee District near Crema Park!`
+      text: `☕ **${matchedItemByName.name}** ($${matchedItemByName.price.toFixed(2)}):\n\n*${matchedItemByName.description}*\n\n• **Ingredients:** ${matchedItemByName.ingredients.join(', ')}\n• **Allergens:** ${matchedItemByName.allergens.join(', ')}\n• **Prep Time:** ${matchedItemByName.prepTime || '2-3 mins'}\n• **Recommended Pairing:** ${matchedItemByName.pairingRecommendation}`,
+      items: [matchedItemByName]
     };
   }
 
+  // 10. Store Location, Address, Parking, Directions
+  if (q.includes('address') || q.includes('location') || q.includes('where') || q.includes('direction') || q.includes('map') || q.includes('parking')) {
+    return {
+      text: `📍 **Oak & Bean Store Location & Directions:**\n\n• **Address:** ${CAFE_INFO.address}\n• **Parking:** Free 2-hour underground guest parking behind the cafe.\n• **Phone:** ${CAFE_INFO.phone}\n• **Landmark:** Located in the Coffee District near Crema Park!`
+    };
+  }
+
+  // 11. Opening Hours
   if (q.includes('hour') || q.includes('open') || q.includes('time') || q.includes('schedule') || q.includes('close')) {
     return {
-      text: `⏰ **Opening Hours:**\n\n• **Weekdays:** ${CAFE_INFO.hours.weekdays}\n• **Weekends:** ${CAFE_INFO.hours.weekends}\n• **Holidays:** ${CAFE_INFO.hours.holidays}\n\n🟢 *Currently open with seating available!*`
+      text: `⏰ **Café Opening Hours:**\n\n• **Weekdays:** ${CAFE_INFO.hours.weekdays}\n• **Weekends:** ${CAFE_INFO.hours.weekends}\n• **Holidays:** ${CAFE_INFO.hours.holidays}\n\n🟢 *We are open daily for dine-in, takeaway, and express pickup!*`
     };
   }
 
-  if (q.includes('price') || q.includes('cost') || q.includes('expensive') || q.includes('menu price') || q.includes('how much') || q.includes('deal') || q.includes('discount') || q.includes('offer')) {
+  // 12. Prices & Offers
+  if (q.includes('price') || q.includes('cost') || q.includes('how much') || q.includes('deal') || q.includes('discount') || q.includes('promo') || q.includes('offer') || q.includes('coupon')) {
     return {
-      text: `💵 **Pricing & Offers:**\n\n• **Brews & Specialty Drinks:** ${CAFE_INFO.pricing.coffeeRange}\n• **Fresh Bakery:** ${CAFE_INFO.pricing.pastryRange}\n• **Average Order:** ${CAFE_INFO.pricing.averagePerPerson}\n\n✨ *Use code **OAK15** for 15% off your first order!*`
+      text: `💵 **Menu Pricing & Active Special Offers:**\n\n• **Specialty Brews:** ${CAFE_INFO.pricing.coffeeRange}\n• **Fresh Bakery:** ${CAFE_INFO.pricing.pastryRange}\n\n🎁 **Active Promo Codes:**\n- **OAK15**: 15% off orders > $10\n- **BREW20**: 20% off custom coffee builder`
     };
   }
 
-  if (q.includes('seat') || q.includes('table') || q.includes('reserve') || q.includes('booking') || q.includes('wifi') || q.includes('event') || q.includes('outlet')) {
+  // 13. Seating, Table Reservation, Wi-Fi, Outlets
+  if (q.includes('seat') || q.includes('table') || q.includes('reserve') || q.includes('booking') || q.includes('wifi') || q.includes('outlet') || q.includes('plug')) {
     return {
-      text: `🪑 **Seating, Reservations & Events:**\n\n• **Available Seats:** ${CAFE_INFO.seating.currentAvailable} open seats out of ${CAFE_INFO.seating.totalCapacity}.\n• **Wi-Fi:** Free 1 Gbps High-Speed Fiber.\n• **Outlets:** Power outlets at all tables & counter bar.\n\nClick **Reserve Table** on our website to book your spot!`
+      text: `🪑 **Seating & Table Reservations:**\n\n• **Available Seats:** ${CAFE_INFO.seating.currentAvailable} open seats out of ${CAFE_INFO.seating.totalCapacity}.\n• **Wi-Fi:** Free 1 Gbps High-Speed Fiber.\n• **Power Outlets:** Available at all tables and counter bars.\n\nYou can click **Reserve a Table** in our top menu to book your spot!`
     };
   }
 
+  // 14. Delivery, Takeaway, Pickup
   if (q.includes('delivery') || q.includes('takeaway') || q.includes('pickup') || q.includes('ubereats') || q.includes('doordash')) {
     return {
-      text: `🛵 **Delivery & Takeaway:**\n\n• **In-House Delivery:** 15-minute delivery within 3 miles ($2.99 fee, FREE over $25!).\n• **Express Pickup / Takeaway:** Order online and pick up at our counter bar without waiting.`
+      text: `🛵 **Delivery & Express Pickup:**\n\n• **15-Min Delivery:** Within 3 miles ($2.99 fee, FREE on orders over $25!).\n• **Express Pickup:** Order online and pick up at our counter bar without waiting.`
     };
   }
 
-  if (q.includes('payment') || q.includes('loyalty') || q.includes('contact') || q.includes('phone') || q.includes('email') || q.includes('card') || q.includes('pay')) {
+  // 15. Contact & Payments
+  if (q.includes('contact') || q.includes('phone') || q.includes('email') || q.includes('payment') || q.includes('card') || q.includes('pay') || q.includes('loyalty')) {
     return {
-      text: `💳 **Payment Methods & Contact Info:**\n\n• **Payment Methods:** Apple Pay, Google Pay, Credit/Debit cards, Cash.\n• **Loyalty Program:** Earn 1 point per $1 spent towards free specialty drinks.\n• **Phone:** ${CAFE_INFO.phone}\n• **Email:** ${CAFE_INFO.email}`
+      text: `💳 **Contact & Payment Options:**\n\n• **Phone:** ${CAFE_INFO.phone}\n• **Email:** ${CAFE_INFO.email}\n• **Accepted Payments:** Apple Pay, Google Pay, Visa, Mastercard, Cash.\n• **Loyalty Program:** Earn 1 point per $1 spent towards free specialty drinks!`
     };
   }
 
+  // 16. Polite fallback for unanswerable café queries
+  if (q.includes('cafe') || q.includes('coffee') || q.includes('drink') || q.includes('food') || q.includes('menu') || q.includes('oak') || q.includes('bean') || q.includes('order') || q.includes('hello') || q.includes('hi') || q.includes('hey')) {
+    return {
+      text: `☕ Hello! As a barista at Oak & Bean, I'd be happy to help you with anything about our specialty coffee menu, fresh bakery items, opening hours, location, or table reservations! What can I get started for you today?`
+    };
+  }
+
+  // Default refusal for completely non-café questions
   return {
     text: EXACT_REFUSAL_MESSAGE,
     source: 'guardrail'

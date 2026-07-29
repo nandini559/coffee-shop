@@ -29,7 +29,6 @@ export default function App() {
       <AuthProvider>
         <div className="min-h-screen relative flex flex-col font-sans">
           <Navbar onOpenReservation={() => setIsReservationOpen(true)}/>
-
           <main className="flex-grow">
             <Hero onOpenReservation={() => setIsReservationOpen(true)}/>
             <FeaturedSection/>
@@ -39,14 +38,11 @@ export default function App() {
             <GallerySection/>
             <ContactSection onOpenReservation={() => setIsReservationOpen(true)}/>
           </main>
-
-          <Footer onOpenReservation={() => setIsReservationOpen(true)}/> {/* Interactive Floating Chatbot */}
+          <Footer onOpenReservation={() => setIsReservationOpen(true)}/>{" "}
+          {/* Interactive Floating Chatbot */}
           {/* <Chatbot /> */}
-
           {/* Floating Action Buttons: Scroll to Top, WhatsApp & AI Chatbot */}
-          <FloatingButtons onOpenReservation={() => setIsReservationOpen(true)}/>
-
-          {/* Modals & Drawers */}
+          <FloatingButtons onOpenReservation={() => setIsReservationOpen(true)}/> {/* Modals & Drawers */}
           <CartDrawer/>
           <CheckoutModal/>
           <ReservationModal isOpen={isReservationOpen} onClose={() => setIsReservationOpen(false)}/>
