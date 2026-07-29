@@ -186,12 +186,18 @@ export default function MenuSection() {
     {/* QUICK VIEW ITEM DETAILS MODAL */}
     <AnimatePresence>
       {
-        activeItemModal && (<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
-          <motion.div initial={{
-              opacity: 0,
-              scale: 0.92,
-              y: 20
-            }} animate={{
+        activeItemModal && (
+          <div
+            onClick={() => setActiveItemModal(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md"
+          >
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              initial={{
+                opacity: 0,
+                scale: 0.92,
+                y: 20
+              }} animate={{
               opacity: 1,
               scale: 1,
               y: 0

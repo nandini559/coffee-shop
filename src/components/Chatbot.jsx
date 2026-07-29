@@ -98,7 +98,7 @@ export default function Chatbot({ isOpen, setIsOpen, onOpenReservation }) {
               </div>
               <div>
                 <span className="text-sm font-serif font-bold text-[#2C1A14] dark:text-white flex items-center gap-1.5">
-                  AI Barista <Sparkles className="w-3.5 h-3.5 text-[#C67C4E] dark:text-[#F0C085] animate-pulse" />
+                  Coffee Companion <Sparkles className="w-3.5 h-3.5 text-[#C67C4E] dark:text-[#F0C085] animate-pulse" />
                 </span>
                 {/* <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-extrabold flex items-center gap-1">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -108,13 +108,13 @@ export default function Chatbot({ isOpen, setIsOpen, onOpenReservation }) {
             </div>
 
             <div className="flex items-center gap-1">
-              <button
+              {/* <button
                 onClick={handleClearChat}
                 title="Clear Chat History"
                 className="p-2 rounded-xl text-[#5C4337] dark:text-coffee-400 hover:text-[#2C1A14] dark:hover:text-white hover:bg-[#E5DCD3]/50 dark:hover:bg-coffee-900 transition"
               >
                 <Trash2 className="w-4 h-4" />
-              </button>
+              </button> */}
               <button
                 onClick={() => setIsOpen(false)}
                 title="Close Chat"

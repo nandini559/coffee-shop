@@ -37,8 +37,17 @@ export default function CheckoutModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="relative w-full max-w-2xl glass-card rounded-3xl overflow-hidden border border-amber-400/40 p-6 sm:p-8 space-y-6 text-white my-8">
+    <div
+      onClick={() => {
+        setIsCheckoutOpen(false);
+        setActiveOrder(null);
+      }}
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-2xl glass-card rounded-3xl overflow-hidden border border-amber-400/40 p-6 sm:p-8 space-y-6 text-white my-8"
+      >
         
         {/* Close Button */}
         <button

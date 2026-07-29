@@ -22,8 +22,14 @@ export default function ReservationModal({ isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-      <div className="relative w-full max-w-lg glass-card rounded-3xl p-6 sm:p-8 space-y-6 text-white border border-amber-400/40">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-lg glass-card rounded-3xl p-6 sm:p-8 space-y-6 text-white border border-amber-400/40"
+      >
         
         <button
           onClick={onClose}

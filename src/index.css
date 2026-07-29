@@ -7,16 +7,22 @@
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
     overflow-x: hidden;
+    touch-action: manipulation;
   }
   body {
     @apply bg-[#FDFBF7] text-[#2C1A14] dark:bg-[#160F0B] dark:text-[#F7ECE1] font-sans antialiased transition-colors duration-300 min-h-screen relative overflow-x-hidden;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    touch-action: manipulation;
     background-image: 
       radial-gradient(circle at 15% 15%, rgba(240, 192, 133, 0.15) 0%, transparent 40%),
       radial-gradient(circle at 85% 65%, rgba(198, 124, 78, 0.12) 0%, transparent 45%),
       radial-gradient(circle at 50% 90%, rgba(92, 67, 55, 0.08) 0%, transparent 50%),
       linear-gradient(180deg, #FFFDF9 0%, #FAF6F0 25%, #F5EFE6 50%, #E8DCCF 75%, #FDFBF7 100%);
     background-attachment: fixed;
+  }
+  button, a, input, select, textarea, [role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .dark body {
