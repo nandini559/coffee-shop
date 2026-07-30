@@ -38,7 +38,7 @@ export default function CartDrawer() {
     <AnimatePresence>
       {isCartOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden">
-          
+
           {/* Backdrop Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -49,7 +49,7 @@ export default function CartDrawer() {
           />
 
           <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
-            
+
             {/* Slide-in Cart Drawer */}
             <motion.div
               initial={{ x: '100%' }}
@@ -58,7 +58,7 @@ export default function CartDrawer() {
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               className="w-screen max-w-md glass-panel bg-coffee-50/95 dark:bg-coffee-950/95 text-coffee-950 dark:text-white border-l border-coffee-200 dark:border-coffee-800 flex flex-col justify-between shadow-2xl"
             >
-              
+
               {/* Header */}
               <div className="p-6 border-b border-coffee-200 dark:border-coffee-800 flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -81,22 +81,20 @@ export default function CartDrawer() {
               <div className="p-4 bg-coffee-100/60 dark:bg-coffee-900/60 border-b border-coffee-200 dark:border-coffee-800 grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setOrderType('delivery')}
-                  className={`py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 border transition ${
-                    orderType === 'delivery'
+                  className={`py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 border transition ${orderType === 'delivery'
                       ? 'bg-coffee-600 dark:bg-amber-500 text-white dark:text-coffee-950 border-coffee-500 dark:border-amber-400 shadow-md'
                       : 'bg-white dark:bg-coffee-950 border-coffee-200 dark:border-coffee-800 text-coffee-800 dark:text-coffee-300'
-                  }`}
+                    }`}
                 >
                   <Truck className="w-4 h-4" /> 15-Min Delivery
                 </button>
 
                 <button
                   onClick={() => setOrderType('pickup')}
-                  className={`py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 border transition ${
-                    orderType === 'pickup'
+                  className={`py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 border transition ${orderType === 'pickup'
                       ? 'bg-coffee-600 dark:bg-amber-500 text-white dark:text-coffee-950 border-coffee-500 dark:border-amber-400 shadow-md'
                       : 'bg-white dark:bg-coffee-950 border-coffee-200 dark:border-coffee-800 text-coffee-800 dark:text-coffee-300'
-                  }`}
+                    }`}
                 >
                   <Store className="w-4 h-4" /> Express Pickup
                 </button>
@@ -108,12 +106,12 @@ export default function CartDrawer() {
                   <div className="h-full flex flex-col items-center justify-center text-center space-y-3">
                     <ShoppingBag className="w-12 h-12 text-coffee-400" />
                     <p className="text-sm font-semibold text-coffee-700 dark:text-coffee-300">Your cart is currently empty.</p>
-                    <button
+                    {/* <button
                       onClick={() => setIsCartOpen(false)}
                       className="px-6 py-2.5 rounded-xl bg-coffee-600 dark:bg-amber-500 text-white dark:text-coffee-950 font-bold text-xs"
                     >
                       Explore Our Menu
-                    </button>
+                    </button> */}
                   </div>
                 ) : (
                   <AnimatePresence>
@@ -127,11 +125,11 @@ export default function CartDrawer() {
                         className="bg-white/80 dark:bg-coffee-900/70 p-4 rounded-2xl border border-coffee-200 dark:border-coffee-800 flex gap-4 items-center justify-between shadow-sm"
                       >
                         <img src={item.image} alt={item.name} className="w-14 h-14 rounded-xl object-cover shrink-0" />
-                        
+
                         <div className="flex-1 min-w-0">
                           <h4 className="text-xs font-bold text-coffee-950 dark:text-white truncate">{item.name}</h4>
                           <span className="text-xs font-extrabold text-coffee-900 dark:text-amber-300 block mt-0.5">${item.price.toFixed(2)}</span>
-                          
+
                           {item.story && (
                             <p className="text-[10px] text-coffee-600 dark:text-coffee-400 italic truncate mt-0.5">
                               "{item.story}"
@@ -170,7 +168,7 @@ export default function CartDrawer() {
               {/* Checkout Breakdown Footer */}
               {cartItems.length > 0 && (
                 <div className="p-6 bg-coffee-100/90 dark:bg-coffee-950 border-t border-coffee-200 dark:border-coffee-800 space-y-4">
-                  
+
                   {/* Promo Code Form */}
                   <form onSubmit={handleApplyCode} className="flex gap-2">
                     <div className="relative flex-1">
