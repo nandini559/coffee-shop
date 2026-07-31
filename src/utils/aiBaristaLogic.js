@@ -1,5 +1,5 @@
-import {MENU_ITEMS} from "../data/menuData";
-import {CAFE_INFO} from "../data/faqData";
+import { MENU_ITEMS } from "../data/menuData";
+import { CAFE_INFO } from "../data/faqData";
 
 // --- BUILD YOUR OWN COFFEE AI CONFIG & LOGIC EXPORTS ---
 
@@ -211,10 +211,8 @@ Name: ${CAFE_INFO.name}
 Address: ${CAFE_INFO.address}
 Phone: ${CAFE_INFO.phone}
 Email: ${CAFE_INFO.email}
-Hours: Weekdays (${CAFE_INFO.hours.weekdays}), Weekends (${
-CAFE_INFO.hours.weekends}), Holidays (${CAFE_INFO.hours.holidays})
-Seating: Total ${CAFE_INFO.seating.totalCapacity} (Indoor ${
-CAFE_INFO.seating.indoorSeats}, Patio ${CAFE_INFO.seating.patioSeats}), Wi-Fi: ${CAFE_INFO.seating.wifiSpeed}
+Hours: Weekdays (${CAFE_INFO.hours.weekdays}), Weekends (${CAFE_INFO.hours.weekends}), Holidays (${CAFE_INFO.hours.holidays})
+Seating: Total ${CAFE_INFO.seating.totalCapacity} (Indoor ${CAFE_INFO.seating.indoorSeats}, Patio ${CAFE_INFO.seating.patioSeats}), Wi-Fi: ${CAFE_INFO.seating.wifiSpeed}
 parking: ${CAFE_INFO.parking}
 
 Delivery: Express 15-min delivery within 3 miles ($2.99 fee, FREE on orders > $25). Express pickup available.
@@ -225,12 +223,12 @@ ${MENU_ITEMS.map(i => `- ${i.name} ($${i.price.toFixed(2)}): ${i.description}. I
 
 // Domain relevance guardrail check
 export function isCafeRelatedQuery(query) {
-  if (!query || typeof query !== "string") 
+  if (!query || typeof query !== "string")
     return false;
   const rawQ = query.toLowerCase().trim();
-  if (!rawQ) 
+  if (!rawQ)
     return false;
-  
+
   // Check greetings & cafe conversational phrases first
   const greetingPhrases = [
     "hi",
@@ -356,8 +354,8 @@ function normalizeQuery(str) {
     }
   ];
 
-  for (const {regex, replacement}
-  of typos) {
+  for (const { regex, replacement }
+    of typos) {
     q = q.replace(regex, replacement);
   }
 
@@ -376,7 +374,7 @@ function hasWords(query, wordsList) {
 
 // Extract relevant menu items for product card display
 export function getMatchingMenuItems(query) {
-  if (!query || typeof query !== "string") 
+  if (!query || typeof query !== "string")
     return null;
   const q = normalizeQuery(query.toLowerCase().trim());
 
@@ -549,7 +547,7 @@ export function getMatchingMenuItems(query) {
 // Query local Gemma 4 model via Ollama / REST API
 export async function queryGemmaLocalModel(userMessage, chatHistory = []) {
   if (!isCafeRelatedQuery(userMessage)) {
-    return {text: EXACT_REFUSAL_MESSAGE, items: null, source: "guardrail"};
+    return { text: EXACT_REFUSAL_MESSAGE, items: null, source: "guardrail" };
   }
 
   const formattedMessages = [
@@ -596,12 +594,12 @@ export async function queryGemmaLocalModel(userMessage, chatHistory = []) {
         if (data && data.message && data.message.content) {
           const content = data.message.content.trim();
           if (content.toLowerCase().includes("python") || content.toLowerCase().includes("programming") || content.toLowerCase().includes("capital of")) {
-            return {text: EXACT_REFUSAL_MESSAGE, items: null, source: "guardrail"};
+            return { text: EXACT_REFUSAL_MESSAGE, items: null, source: "guardrail" };
           }
           return processResponseWithItemMatching(content, userMessage);
         }
       }
-    } catch (e) {}
+    } catch (e) { }
 
     try {
       const controller = new AbortController();
@@ -612,7 +610,7 @@ export async function queryGemmaLocalModel(userMessage, chatHistory = []) {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({model: modelName, messages: formattedMessages, temperature: 0.3}),
+        body: JSON.stringify({ model: modelName, messages: formattedMessages, temperature: 0.3 }),
         signal: controller.signal
       });
 
@@ -625,7 +623,7 @@ export async function queryGemmaLocalModel(userMessage, chatHistory = []) {
           return processResponseWithItemMatching(content, userMessage);
         }
       }
-    } catch (e) {}
+    } catch (e) { }
   }
 
   return processUserChatQuery(userMessage);
@@ -634,16 +632,16 @@ export async function queryGemmaLocalModel(userMessage, chatHistory = []) {
 function processResponseWithItemMatching(responseText, originalQuery) {
   const matchingItems = getMatchingMenuItems(originalQuery);
 
-  return {text: responseText, items: matchingItems, source: "gemma4"};
+  return { text: responseText, items: matchingItems, source: "gemma4" };
 }
 
 export function processUserChatQuery(query) {
   if (!query || typeof query !== "string") {
-    return {text: EXACT_REFUSAL_MESSAGE, items: null, source: "guardrail"};
+    return { text: EXACT_REFUSAL_MESSAGE, items: null, source: "guardrail" };
   }
 
   if (!isCafeRelatedQuery(query)) {
-    return {text: EXACT_REFUSAL_MESSAGE, items: null, source: "guardrail"};
+    return { text: EXACT_REFUSAL_MESSAGE, items: null, source: "guardrail" };
   }
 
   const rawQ = query.toLowerCase().trim();
@@ -652,7 +650,7 @@ export function processUserChatQuery(query) {
   // 1. Identity & Greeting Queries
   if (hasWords(q, ["who are you", "what is your name", "who made you", "what are you", "your name"])) {
     return {
-      text: `☕ Hi! I'm **BeanBuddy**, your coffee companion at Oak & Bean Artisanal Café! I'm here to give you drink & food recommendations, answer menu questions, share opening hours, store location, table reservations, and active promo codes!`
+      text: `☕ Hi! I'm BeanBuddy, your coffee companion at Oak & Bean Artisanal Café! I'm here to give you drink & food recommendations, answer menu questions, share opening hours, store location, table reservations, and active promo codes!`
     };
   }
 
@@ -672,7 +670,7 @@ export function processUserChatQuery(query) {
     "greetings"
   ])) {
     return {
-      text: `☕ Welcome to Oak & Bean! I'm **BeanBuddy**, your coffee companion. I'd love to help you explore our specialty coffees, 5:00 AM bakery treats, or give you personalized recommendations! What can I get started for you today?`,
+      text: `☕ Welcome to Oak & Bean! I'm BeanBuddy, your coffee companion. I'd love to help you explore our specialty coffees, 5:00 AM bakery treats, or give you personalized recommendations! What can I get started for you today?`,
       items: MENU_ITEMS.filter(i => i.popular).slice(0, 3)
     };
   }
@@ -698,17 +696,17 @@ export function processUserChatQuery(query) {
     const croissant = MENU_ITEMS.find(i => i.id === "item-7");
 
     return {
-      text: `⭐ **Oak & Bean's Actual Bestsellers & Customer Favorites:**
+      text: `⭐ Oak & Bean's Actual Bestsellers & Customer Favorites:
 
-1. **${caramelLatte.name}** ($${caramelLatte.price.toFixed(2)}) – Our **#1 Bestseller**! Double shot of direct-trade Ethiopian espresso with velvety oat milk & house salted amber caramel.
-   🥐 *Recommended Pairing:* Golden Flaky French Butter Croissant.
+1. ${caramelLatte.name} ($${caramelLatte.price.toFixed(2)}) – Our #1 Bestseller! Double shot of direct-trade Ethiopian espresso with velvety oat milk & house salted amber caramel.
+   🥐 Recommended Pairing: Golden Flaky French Butter Croissant.
 
-2. **${nitroColdBrew.name}** ($${nitroColdBrew.price.toFixed(2)}) – Our **#1 Cold Bestseller**! 20-hour slow-steeped cold brew topped with organic lavender cold foam.
+2. ${nitroColdBrew.name} ($${nitroColdBrew.price.toFixed(2)}) – Our #1 Cold Bestseller! 20-hour slow-steeped cold brew topped with organic lavender cold foam.
    🥐 *Recommended Pairing:* Lemon Blueberry Scone or Avocado Truffle Sourdough Toast.
 
-3. **${spanishTea.name}** ($${spanishTea.price.toFixed(2)}) – Rich espresso folded with condensed milk and smoked bourbon vanilla bean.
+3. ${spanishTea.name} ($${spanishTea.price.toFixed(2)}) – Rich espresso folded with condensed milk and smoked bourbon vanilla bean.
 
-4. **${croissant.name}** ($${croissant.price.toFixed(2)}) – Baked fresh every morning at 5:00 AM using Normandy butter with 27 golden layers!`,
+4. ${croissant.name} ($${croissant.price.toFixed(2)}) – Baked fresh every morning at 5:00 AM using Normandy butter with 27 golden layers!`,
       items: [caramelLatte, nitroColdBrew, spanishTea, croissant].filter(Boolean)
     };
   }
@@ -732,12 +730,12 @@ export function processUserChatQuery(query) {
     const affogato = MENU_ITEMS.find(i => i.id === "item-12");
 
     return {
-      text: `🧊 **Refreshing Cold Drinks & Iced Brews:**
+      text: `🧊 Refreshing Cold Drinks & Iced Brews:
 
-1. **${nitroColdBrew.name}** ($${nitroColdBrew.price.toFixed(2)}) – 20-hour slow-steeped cold brew topped with organic French lavender cold foam.
-2. **${mochaFrappe.name}** ($${mochaFrappe.price.toFixed(2)}) – Iced espresso blended with Belgian dark chocolate sauce & whipped cream.
-3. **${hibiscusTea.name}** ($${hibiscusTea.price.toFixed(2)}) – Cold-infused Egyptian hibiscus, wild blueberries, & mint leaves (Caffeine-free & vegan).
-4. **${affogato.name}** ($${affogato.price.toFixed(2)}) – Handcrafted Madagascar vanilla bean gelato drowned in a hot espresso shot.
+1. ${nitroColdBrew.name} ($${nitroColdBrew.price.toFixed(2)}) – 20-hour slow-steeped cold brew topped with organic French lavender cold foam.
+2. ${mochaFrappe.name} ($${mochaFrappe.price.toFixed(2)}) – Iced espresso blended with Belgian dark chocolate sauce & whipped cream.
+3. ${hibiscusTea.name} ($${hibiscusTea.price.toFixed(2)}) – Cold-infused Egyptian hibiscus, wild blueberries, & mint leaves (Caffeine-free & vegan).
+4. ${affogato.name} ($${affogato.price.toFixed(2)}) – Handcrafted Madagascar vanilla bean gelato drowned in a hot espresso shot.
 🥐 *Pairing tip:* Nitro Cold Brew pairs amazingly with Vegan Avocado Truffle Sourdough Toast!`,
       items: [nitroColdBrew, mochaFrappe, hibiscusTea, affogato].filter(Boolean)
     };
@@ -759,12 +757,12 @@ export function processUserChatQuery(query) {
     const matchaLatte = MENU_ITEMS.find(i => i.id === "item-4");
 
     return {
-      text: `🔥 **Handcrafted Hot Specialty Drinks:**
+      text: `🔥 Handcrafted Hot Specialty Drinks:
 
-1. **${caramelLatte.name}** ($${caramelLatte.price.toFixed(2)}) – Ethiopian espresso, velvety steamed oat milk, and salted amber caramel.
-2. **${flatWhite.name}** ($${flatWhite.price.toFixed(2)}) – Concentrated ristretto shots with micro-foamed Minor Figures oat milk & latte art.
-3. **${spanishTea.name}** ($${spanishTea.price.toFixed(2)}) – Espresso folded with condensed milk and smoked bourbon vanilla bean.
-4. **${matchaLatte.name}** ($${matchaLatte.price.toFixed(2)}) – Ceremonial Kyoto matcha whisked warm with almond milk and raw wildflower honey.
+1. ${caramelLatte.name} ($${caramelLatte.price.toFixed(2)}) – Ethiopian espresso, velvety steamed oat milk, and salted amber caramel.
+2. ${flatWhite.name} ($${flatWhite.price.toFixed(2)}) – Concentrated ristretto shots with micro-foamed Minor Figures oat milk & latte art.
+3. ${spanishTea.name} ($${spanishTea.price.toFixed(2)}) – Espresso folded with condensed milk and smoked bourbon vanilla bean.
+4. ${matchaLatte.name} ($${matchaLatte.price.toFixed(2)}) – Ceremonial Kyoto matcha whisked warm with almond milk and raw wildflower honey.
 🥐 *Pairing tip:* Hot lattes pair perfectly with our 5:00 AM fresh Normandy Butter Croissant!`,
       items: [caramelLatte, flatWhite, spanishTea, matchaLatte].filter(Boolean)
     };
@@ -791,12 +789,12 @@ export function processUserChatQuery(query) {
     const peanutCup = MENU_ITEMS.find(i => i.id === "item-11");
 
     return {
-      text: `🥐 **Fresh Artisanal Bakery & Snack Suggestions:**
+      text: `🥐 Fresh Artisanal Bakery & Snack Suggestions:
 
-1. **${croissant.name}** ($${croissant.price.toFixed(2)}) – Baked fresh every morning at 5:00 AM using Normandy butter with 27 golden layers.
-2. **${danish.name}** ($${danish.price.toFixed(2)}) – Flaky pastry crown filled with Sicilian pistachio frangipane & green cardamom glaze.
-3. **${avocadoToast.name}** ($${avocadoToast.price.toFixed(2)}) – Hass avocado smashed with white truffle oil, toasted pepitas, and chili flakes on artisanal sourdough.
-4. **${peanutCup.name}** ($${peanutCup.price.toFixed(2)}) – 70% dark chocolate cup filled with creamy roasted peanut butter & Himalayan pink salt.
+1. ${croissant.name} ($${croissant.price.toFixed(2)}) – Baked fresh every morning at 5:00 AM using Normandy butter with 27 golden layers.
+2. ${danish.name} ($${danish.price.toFixed(2)}) – Flaky pastry crown filled with Sicilian pistachio frangipane & green cardamom glaze.
+3. ${avocadoToast.name} ($${avocadoToast.price.toFixed(2)}) – Hass avocado smashed with white truffle oil, toasted pepitas, and chili flakes on artisanal sourdough.
+4. ${peanutCup.name} ($${peanutCup.price.toFixed(2)}) – 70% dark chocolate cup filled with creamy roasted peanut butter & Himalayan pink salt.
 ☕ *Pairing tip:* Sourdough Toast pairs wonderfully with our Nitro Lavender Cold Foam Brew!`,
       items: [croissant, danish, avocadoToast, peanutCup].filter(Boolean)
     };
@@ -820,12 +818,12 @@ export function processUserChatQuery(query) {
     const peanutCup = MENU_ITEMS.find(i => i.id === "item-11");
 
     return {
-      text: `🍯 **Sweet & Indulgent Menu Recommendations:**
+      text: `🍯 Sweet & Indulgent Menu Recommendations:
 
-1. **${spanishTea.name}** ($${spanishTea.price.toFixed(2)}) – Rich espresso folded with sweet condensed milk & smoked bourbon vanilla bean.
-2. **${caramelLatte.name}** ($${caramelLatte.price.toFixed(2)}) – Ethiopian espresso with organic oat milk and salted caramel.
-3. **${mochaFrappe.name}** ($${mochaFrappe.price.toFixed(2)}) – Blended espresso & Belgian 70% dark chocolate sauce topped with whipped cream & dark chocolate curls.
-4. **${peanutCup.name}** ($${peanutCup.price.toFixed(2)}) – Dark chocolate cup filled with creamy roasted peanut butter and Himalayan sea salt.
+1. ${spanishTea.name} ($${spanishTea.price.toFixed(2)}) – Rich espresso folded with sweet condensed milk & smoked bourbon vanilla bean.
+2. ${caramelLatte.name} ($${caramelLatte.price.toFixed(2)}) – Ethiopian espresso with organic oat milk and salted caramel.
+3. ${mochaFrappe.name} ($${mochaFrappe.price.toFixed(2)}) – Blended espresso & Belgian 70% dark chocolate sauce topped with whipped cream & dark chocolate curls.
+4. ${peanutCup.name} ($${peanutCup.price.toFixed(2)}) – Dark chocolate cup filled with creamy roasted peanut butter and Himalayan sea salt.
 🥐 *Pairing tip:* Smoked Vanilla Spanish Tea pairs delightfully with a warm French Butter Croissant!`,
       items: [spanishTea, caramelLatte, mochaFrappe, peanutCup].filter(Boolean)
     };
@@ -848,11 +846,11 @@ export function processUserChatQuery(query) {
     const danish = MENU_ITEMS.find(i => i.id === "item-8");
 
     return {
-      text: `🥐☕ **Perfect Coffee & Pastry Complementary Pairings:**
+      text: `🥐☕ Perfect Coffee & Pastry Complementary Pairings:
 
-1. **Velvet Caramel Latte + Golden Butter Croissant:** The 27 buttery layers of the croissant elevate the salted caramel notes of the Ethiopian espresso.
-2. **Golden Oat Flat White + Pistachio Cardamom Danish:** Silky oat milk micro-foam complements the aromatic green cardamom & Sicilian pistachio frangipane.
-3. **Nitro Cold Brew + Avocado Truffle Sourdough Toast:** Crisp cold brew cuts through the rich truffle avocado on warm sourdough!`,
+1. Velvet Caramel Latte + Golden Butter Croissant: The 27 buttery layers of the croissant elevate the salted caramel notes of the Ethiopian espresso.
+2. Golden Oat Flat White + Pistachio Cardamom Danish: Silky oat milk micro-foam complements the aromatic green cardamom & Sicilian pistachio frangipane.
+3. Nitro Cold Brew + Avocado Truffle Sourdough Toast: Crisp cold brew cuts through the rich truffle avocado on warm sourdough!`,
       items: [caramelLatte, croissant, flatWhite, danish].filter(Boolean)
     };
   }
@@ -873,11 +871,11 @@ export function processUserChatQuery(query) {
     const flatWhite = MENU_ITEMS.find(i => i.id === "item-3");
 
     return {
-      text: `⚡ **High-Caffeine & Bold Coffee Picks:**
+      text: `⚡ High-Caffeine & Bold Coffee Picks:
 
-1. **${nitro.name}** ($${nitro.price.toFixed(2)}) – 20-hour slow-steeped cold brew infused with nitrogen for an intense energy boost.
-2. **${latte.name}** ($${latte.price.toFixed(2)}) – Double shot of direct-trade Ethiopian single-origin espresso.
-3. **${flatWhite.name}** ($${flatWhite.price.toFixed(2)}) – Concentrated ristretto espresso shots for deep roast flavor and high intensity.`,
+1. ${nitro.name} ($${nitro.price.toFixed(2)}) – 20-hour slow-steeped cold brew infused with nitrogen for an intense energy boost.
+2. ${latte.name} ($${latte.price.toFixed(2)}) – Double shot of direct-trade Ethiopian single-origin espresso.
+3. ${flatWhite.name} ($${flatWhite.price.toFixed(2)}) – Concentrated ristretto espresso shots for deep roast flavor and high intensity.`,
       items: [nitro, latte, flatWhite].filter(Boolean)
     };
   }
@@ -890,11 +888,11 @@ export function processUserChatQuery(query) {
     const top3 = sorted[2];
 
     return {
-      text: `💰 **Our Most Premium Specialty Menu Items:**
+      text: `💰 Our Most Premium Specialty Menu Items:
 
-1. **${top1.name}** ($${top1.price.toFixed(2)}) – Direct-trade Ethiopian espresso, organic oat milk, and house salted amber caramel.
-2. **${top2.name}** ($${top2.price.toFixed(2)}) – Ristretto espresso shots with Minor Figures oat milk and latte art.
-3. **${top3.name}** ($${top3.price.toFixed(2)}) – Artisanal sourdough toast with Hass avocado, white truffle oil, & Maldon sea salt.`,
+1. ${top1.name} ($${top1.price.toFixed(2)}) – Direct-trade Ethiopian espresso, organic oat milk, and house salted amber caramel.
+2. ${top2.name} ($${top2.price.toFixed(2)}) – Ristretto espresso shots with Minor Figures oat milk and latte art.
+3. ${top3.name} ($${top3.price.toFixed(2)}) – Artisanal sourdough toast with Hass avocado, white truffle oil, & Maldon sea salt.`,
       items: [top1, top2, top3].filter(Boolean)
     };
   }
@@ -915,12 +913,12 @@ export function processUserChatQuery(query) {
     const cheap4 = sorted[3];
 
     return {
-      text: `🏷️ **Most Affordable & Budget-Friendly Picks:**
+      text: `🏷️ Most Affordable & Budget-Friendly Picks:
 
-1. **${cheap1.name}** – **$${cheap1.price.toFixed(2)}** (First-harvest Kyoto matcha with almond milk & wildflower honey)
-2. **${cheap2.name}** – **$${cheap2.price.toFixed(2)}** (Freshly baked 5:00 AM French butter croissant)
-3. **${cheap3.name}** – **$${cheap3.price.toFixed(2)}** (70% dark chocolate cup filled with roasted peanut butter)
-4. **${cheap4.name}** – **$${cheap4.price.toFixed(2)}** (Cold-infused wild berry hibiscus iced tea)`,
+1. ${cheap1.name} – $${cheap1.price.toFixed(2)} (First-harvest Kyoto matcha with almond milk & wildflower honey)
+2. ${cheap2.name} – $${cheap2.price.toFixed(2)} (Freshly baked 5:00 AM French butter croissant)
+3. ${cheap3.name} – $${cheap3.price.toFixed(2)} (70% dark chocolate cup filled with roasted peanut butter)
+4. ${cheap4.name} – $${cheap4.price.toFixed(2)} (Cold-infused wild berry hibiscus iced tea)`,
       items: [cheap1, cheap2, cheap3, cheap4].filter(Boolean)
     };
   }
@@ -942,12 +940,12 @@ export function processUserChatQuery(query) {
     const hibiscusTea = MENU_ITEMS.find(i => i.id === "item-9");
 
     return {
-      text: `🌱 **Plant-Based & Healthy Dietary Recommendations:**
+      text: `🌱 Plant-Based & Healthy Dietary Recommendations:
 
-1. **${matchaLatte.name}** ($${matchaLatte.price.toFixed(2)}) – Whisked with unsweetened almond milk and optional maple syrup for a 100% vegan antioxidant drink.
-2. **${avocadoToast.name}** ($${avocadoToast.price.toFixed(2)}) – 100% vegan sourdough toast topped with Hass avocado, white truffle oil, & pepita seeds.
-3. **${peanutCup.name}** ($${peanutCup.price.toFixed(2)}) – 70% dark fair-trade chocolate with creamy peanut butter & Himalayan sea salt (Gluten-free & Vegan).
-4. **${hibiscusTea.name}** ($${hibiscusTea.price.toFixed(2)}) – Caffeine-free, organic, 100% vegan hibiscus refresher.`,
+1. ${matchaLatte.name} ($${matchaLatte.price.toFixed(2)}) – Whisked with unsweetened almond milk and optional maple syrup for a 100% vegan antioxidant drink.
+2. ${avocadoToast.name} ($${avocadoToast.price.toFixed(2)}) – 100% vegan sourdough toast topped with Hass avocado, white truffle oil, & pepita seeds.
+3. ${peanutCup.name} ($${peanutCup.price.toFixed(2)}) – 70% dark fair-trade chocolate with creamy peanut butter & Himalayan sea salt (Gluten-free & Vegan).
+4. ${hibiscusTea.name} ($${hibiscusTea.price.toFixed(2)}) – Caffeine-free, organic, 100% vegan hibiscus refresher.`,
       items: [matchaLatte, avocadoToast, peanutCup, hibiscusTea].filter(Boolean)
     };
   }
@@ -967,12 +965,12 @@ export function processUserChatQuery(query) {
     const croissant = MENU_ITEMS.find(i => i.id === "item-7");
 
     return {
-      text: `🍰 **Handcrafted Desserts & Sweets:**
+      text: `🍰 Handcrafted Desserts & Sweets:
 
-1. **${affogato.name}** ($${affogato.price.toFixed(2)}) – Classic Italian espresso dessert with handcrafted Madagascar vanilla bean gelato drowned in hot espresso.
-2. **${danish.name}** ($${danish.price.toFixed(2)}) – Flaky pastry crown filled with Sicilian pistachio frangipane & green cardamom glaze.
-3. **${peanutCup.name}** ($${peanutCup.price.toFixed(2)}) – Rich dark chocolate cup filled with creamy peanut butter.
-4. **${croissant.name}** ($${croissant.price.toFixed(2)}) – Freshly baked morning croissant with 27 paper-thin layers.`,
+1. ${affogato.name} ($${affogato.price.toFixed(2)}) – Classic Italian espresso dessert with handcrafted Madagascar vanilla bean gelato drowned in hot espresso.
+2. ${danish.name} ($${danish.price.toFixed(2)}) – Flaky pastry crown filled with Sicilian pistachio frangipane & green cardamom glaze.
+3. ${peanutCup.name} ($${peanutCup.price.toFixed(2)}) – Rich dark chocolate cup filled with creamy peanut butter.
+4. ${croissant.name} ($${croissant.price.toFixed(2)}) – Freshly baked morning croissant with 27 paper-thin layers.`,
       items: [affogato, danish, peanutCup, croissant].filter(Boolean)
     };
   }
@@ -999,12 +997,12 @@ export function processUserChatQuery(query) {
     const croissant = MENU_ITEMS.find(i => i.id === "item-7");
 
     return {
-      text: `☕ **BeanBuddy's Top Menu Recommendations:**
+      text: `☕ BeanBuddy's Top Menu Recommendations:
 
-• **For a Rich Caramel Espresso:** Try our **Oak & Bean Velvet Caramel Latte** ($${caramelLatte.price.toFixed(2)}). Smooth, velvety, and infused with house-made salted amber caramel.
-• **For a Refreshing Cold Boost:** Try the **Nitro Lavender Cold Foam Brew** ($${nitroColdBrew.price.toFixed(2)}), slow-steeped for 20 hours with nitrogen micro-foam.
-• **For an Antioxidant Superfood:** Try our **Ceremonial Uji Matcha Latte** ($${matchaLatte.price.toFixed(2)}), whisked warm with almond milk & wildflower honey.
-• **Perfect Bakery Pairing:** Pair any brew with our **Golden Flaky French Butter Croissant** ($${croissant.price.toFixed(2)}) baked fresh daily at 5:00 AM!`,
+• For a Rich Caramel Espresso: Try our Oak & Bean Velvet Caramel Latte ($${caramelLatte.price.toFixed(2)}). Smooth, velvety, and infused with house-made salted amber caramel.
+• For a Refreshing Cold Boost: Try the Nitro Lavender Cold Foam Brew ($${nitroColdBrew.price.toFixed(2)}), slow-steeped for 20 hours with nitrogen micro-foam.
+• For an Antioxidant Superfood: Try our Ceremonial Uji Matcha Latte ($${matchaLatte.price.toFixed(2)}), whisked warm with almond milk & wildflower honey.
+• Perfect Bakery Pairing: Pair any brew with our Golden Flaky French Butter Croissant ($${croissant.price.toFixed(2)}) baked fresh daily at 5:00 AM!`,
       items: [caramelLatte, nitroColdBrew, matchaLatte, croissant].filter(Boolean)
     };
   }
@@ -1012,73 +1010,73 @@ export function processUserChatQuery(query) {
   // 13. Specific item queries
   if (hasWords(q, ["matcha latte vegan", "is matcha latte vegan"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-4");
-    return {text: `🍵 **Ceremonial Uji Matcha Latte ($${item.price.toFixed(2)}):**\n\nOur Uji Matcha Latte is crafted with organic Kyoto ceremonial matcha, unsweetened almond milk, raw honey, and vanilla bean paste. It can be made **100% vegan** upon request by substituting raw honey with organic maple syrup!`, items: [item]};
+    return { text: `🍵 Ceremonial Uji Matcha Latte ($${item.price.toFixed(2)}):\n\nOur Uji Matcha Latte is crafted with organic Kyoto ceremonial matcha, unsweetened almond milk, raw honey, and vanilla bean paste. It can be made 100% vegan upon request by substituting raw honey with organic maple syrup!`, items: [item] };
   }
 
   if (hasWords(q, ["espresso", "do you have espresso"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-1");
-    return {text: `☕ **Direct-Trade Ethiopian Espresso:**\n\nWe pull direct-trade Ethiopian single-origin espresso shots as the foundation for all our drinks! Single shot: $3.50 | Double shot: $4.20.`, items: [item]};
+    return { text: `☕ Direct-Trade Ethiopian Espresso:\n\nWe pull direct-trade Ethiopian single-origin espresso shots as the foundation for all our drinks! Single shot: $3.50 | Double shot: $4.20.`, items: [item] };
   }
 
   if (hasWords(q, ["cappuccino", "do you have cappuccino"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-3");
-    return {text: `☕ **Cappuccinos & Flat Whites ($${item.price.toFixed(2)}):**\n\nWe serve velvety cappuccinos and flat whites crafted with double shots of Ethiopian espresso and silky hand-poured micro-foam milk art.`, items: [item]};
+    return { text: `☕ Cappuccinos & Flat Whites ($${item.price.toFixed(2)}):\n\nWe serve velvety cappuccinos and flat whites crafted with double shots of Ethiopian espresso and silky hand-poured micro-foam milk art.`, items: [item] };
   }
 
   if (hasWords(q, ["americano", "do you have americano"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-3");
-    return {text: `☕ **Classic Americano ($4.20):**\n\nPrepared with fresh double shots of direct-trade Ethiopian single-origin espresso diluted over hot filtered water or served iced over crystal ice spheres.`, items: [item]};
+    return { text: `☕ Classic Americano ($4.20):\n\nPrepared with fresh double shots of direct-trade Ethiopian single-origin espresso diluted over hot filtered water or served iced over crystal ice spheres.`, items: [item] };
   }
 
   if (hasWords(q, ["mocha", "do you have mocha"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-6");
-    return {text: `🍫 **Cloud Nine Iced Mocha Frappe ($${item.price.toFixed(2)}):**\n\nBlended espresso, Belgian 70% dark chocolate sauce, crushed ice, topped with house whipped cream and dark chocolate shavings!`, items: [item]};
+    return { text: `🍫 Cloud Nine Iced Mocha Frappe ($${item.price.toFixed(2)}):\n\nBlended espresso, Belgian 70% dark chocolate sauce, crushed ice, topped with house whipped cream and dark chocolate shavings!`, items: [item] };
   }
 
   if (hasWords(q, ["croissant"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-7");
-    return {text: getItemDetailText(item), items: [item]};
+    return { text: getItemDetailText(item), items: [item] };
   }
   if (hasWords(q, ["danish"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-8");
-    return {text: getItemDetailText(item), items: [item]};
+    return { text: getItemDetailText(item), items: [item] };
   }
   if (hasWords(q, ["flat white"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-3");
-    return {text: getItemDetailText(item), items: [item]};
+    return { text: getItemDetailText(item), items: [item] };
   }
   if (hasWords(q, ["uji", "matcha"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-4");
-    return {text: getItemDetailText(item), items: [item]};
+    return { text: getItemDetailText(item), items: [item] };
   }
   if (hasWords(q, ["spanish tea"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-5");
-    return {text: getItemDetailText(item), items: [item]};
+    return { text: getItemDetailText(item), items: [item] };
   }
   if (hasWords(q, ["frappe", "iced mocha"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-6");
-    return {text: getItemDetailText(item), items: [item]};
+    return { text: getItemDetailText(item), items: [item] };
   }
   if (hasWords(q, ["hibiscus", "iced tea"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-9");
-    return {text: getItemDetailText(item), items: [item]};
+    return { text: getItemDetailText(item), items: [item] };
   }
   if (hasWords(q, ["avocado", "toast", "sourdough"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-10");
-    return {text: getItemDetailText(item), items: [item]};
+    return { text: getItemDetailText(item), items: [item] };
   }
   if (hasWords(q, ["peanut cup", "chocolate cup"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-11");
-    return {text: getItemDetailText(item), items: [item]};
+    return { text: getItemDetailText(item), items: [item] };
   }
   if (hasWords(q, ["affogato"])) {
     const item = MENU_ITEMS.find(i => i.id === "item-12");
-    return {text: getItemDetailText(item), items: [item]};
+    return { text: getItemDetailText(item), items: [item] };
   }
 
   const matchedItem = MENU_ITEMS.find(item => q.includes(item.name.toLowerCase()) || item.name.toLowerCase().split(" ").some(w => w.length > 3 && q.includes(w)));
   if (matchedItem) {
-    return {text: getItemDetailText(matchedItem), items: [matchedItem]};
+    return { text: getItemDetailText(matchedItem), items: [matchedItem] };
   }
 
   // 14. Store Location & Directions
@@ -1092,7 +1090,7 @@ export function processUserChatQuery(query) {
     "parking",
     "landmark"
   ])) {
-    return {text: `📍 **Oak & Bean Store Location & Directions:**\n\n• **Address:** ${CAFE_INFO.address}\n• **Landmark:** Located in the Coffee District near Crema Park.\n• **Parking:** Free 2-hour underground guest parking behind the cafe.${CAFE_INFO.parking}\n• **Phone:** ${CAFE_INFO.phone}`, items: null};
+    return { text: `📍 Oak & Bean Store Location & Directions:\n\n• Address: ${CAFE_INFO.address}\n• Landmark: Located in the Coffee District near Crema Park.\n• Parking: Free 2-hour underground guest parking behind the cafe.${CAFE_INFO.parking}\n• Phone: ${CAFE_INFO.phone}`, items: null };
   }
 
   // 15. Opening Hours
@@ -1106,12 +1104,12 @@ export function processUserChatQuery(query) {
     "schedule",
     "when"
   ])) {
-    return {text: `⏰ **Café Opening Hours:**\n\n• **Weekdays:** ${CAFE_INFO.hours.weekdays}\n• **Weekends:** ${CAFE_INFO.hours.weekends}\n• **Holidays:** ${CAFE_INFO.hours.holidays}\n\n🟢 *We are open daily for dine-in, takeaway, and express pickup!*`, items: null};
+    return { text: `⏰ Café Opening Hours:\n\n• Weekdays: ${CAFE_INFO.hours.weekdays}\n• Weekends: ${CAFE_INFO.hours.weekends}\n• Holidays: ${CAFE_INFO.hours.holidays}\n\n🟢 *We are open daily for dine-in, takeaway, and express pickup!*`, items: null };
   }
 
   // 16. Discounts, Promos & Loyalty
   if (hasWords(q, ["student", "student discount", "loyalty", "rewards"])) {
-    return {text: `🎟️ **Student Discounts & Loyalty Program:**\n\n• **Student Discount:** Show a valid student ID at checkout for 10% off your entire order!\n• **Loyalty Program:** Earn 1 point per $1 spent. Redeem 50 points for any free specialty drink!\n• **Promo Codes:** Use **OAK15** for 15% off orders > $10 or **BREW20** for 20% off custom coffee builder.`, items: null};
+    return { text: `🎟️ Student Discounts & Loyalty Program:\n\n• Student Discount: Show a valid student ID at checkout for 10% off your entire order!\n• Loyalty Program: Earn 1 point per $1 spent. Redeem 50 points for any free specialty drink!\n• Promo Codes: Use OAK15 for 15% off orders > $10 or BREW20 for 20% off custom coffee builder.`, items: null };
   }
 
   if (hasWords(q, [
@@ -1131,7 +1129,7 @@ export function processUserChatQuery(query) {
   ])) {
     const items = getMatchingMenuItems(q);
     return {
-      text: `💵 **Menu Pricing & Active Special Offers:**\n\n• **Specialty Brews:** ${CAFE_INFO.pricing.coffeeRange}\n• **Fresh Bakery:** ${CAFE_INFO.pricing.pastryRange}\n• **Average Per Person:** ${CAFE_INFO.pricing.averagePerPerson}\n\n🎁 **Active Promo Codes:**\n- **OAK15**: 15% off orders > $10\n- **BREW20**: 20% off custom coffee builder\n- **MORNINGCOMBO**: Free pastry with large latte (7 AM - 10 AM)`,
+      text: `💵 Menu Pricing & Active Special Offers:\n\n• Specialty Brews: ${CAFE_INFO.pricing.coffeeRange}\n• Fresh Bakery: ${CAFE_INFO.pricing.pastryRange}\n• Average Per Person: ${CAFE_INFO.pricing.averagePerPerson}\n\n🎁 Active Promo Codes:\n- OAK15: 15% off orders > $10\n- BREW20: 20% off custom coffee builder\n- MORNINGCOMBO: Free pastry with large latte (7 AM - 10 AM)`,
       items: items || MENU_ITEMS.filter(i => i.popular).slice(0, 2)
     };
   }
@@ -1153,7 +1151,7 @@ export function processUserChatQuery(query) {
     "outlets",
     "plug"
   ])) {
-    return {text: `🪑 **Seating & Amenities:**\n\n• **Available Seats:** ${CAFE_INFO.seating.currentAvailable} open seats out of ${CAFE_INFO.seating.totalCapacity} (30 indoor, 15 patio).\n• **Wi-Fi:** ${CAFE_INFO.seating.wifiSpeed}.\n• **Power Outlets:** ${CAFE_INFO.seating.powerOutlets}.\n\nYou can click **Reserve a Table** in our top menu to book your spot!`, items: null};
+    return { text: `🪑 Seating & Amenities:\n\n• Available Seats: ${CAFE_INFO.seating.currentAvailable} open seats out of ${CAFE_INFO.seating.totalCapacity} (30 indoor, 15 patio).\n• Wi-Fi: ${CAFE_INFO.seating.wifiSpeed}.\n• Power Outlets: ${CAFE_INFO.seating.powerOutlets}.\n\nYou can click Reserve a Table in our top menu to book your spot!`, items: null };
   }
 
   // 18. Delivery & Pickup
@@ -1165,7 +1163,7 @@ export function processUserChatQuery(query) {
     "doordash",
     "express"
   ])) {
-    return {text: `🛵 **Delivery & Express Pickup:**\n\n• **15-Min Delivery:** ${CAFE_INFO.delivery.inHouse}.\n• **Express Pickup:** ${CAFE_INFO.delivery.pickup}\n• **Partners:** ${CAFE_INFO.delivery.partners}`, items: null};
+    return { text: `🛵 Delivery & Express Pickup:\n\n• 15-Min Delivery: ${CAFE_INFO.delivery.inHouse}.\n• Express Pickup: ${CAFE_INFO.delivery.pickup}\n• Partners: ${CAFE_INFO.delivery.partners}`, items: null };
   }
 
   // 19. Contact & Payment
@@ -1179,14 +1177,14 @@ export function processUserChatQuery(query) {
     "loyalty",
     "cash"
   ])) {
-    return {text: `💳 **Contact & Payment Options:**\n\n• **Phone:** ${CAFE_INFO.phone}\n• **Email:** ${CAFE_INFO.email}\n• **Accepted Payments:** Apple Pay, Google Pay, Visa, Mastercard, Cash.\n• **Loyalty Program:** Earn 1 point per $1 spent towards free specialty drinks!`, items: null};
+    return { text: `💳 Contact & Payment Options:\n\n• Phone: ${CAFE_INFO.phone}\n• Email: ${CAFE_INFO.email}\n• Accepted Payments: Apple Pay, Google Pay, Visa, Mastercard, Cash.\n• Loyalty Program: Earn 1 point per $1 spent towards free specialty drinks!`, items: null };
   }
 
   // 20. General Coffee/Menu Query
   if (hasWords(q, ["coffee", "menu", "drink", "food", "order"])) {
     const items = getMatchingMenuItems(q);
     return {
-      text: `☕ Welcome to Oak & Bean! I'm **BeanBuddy**, your coffee companion. I'd love to help you explore our specialty coffees, 5:00 AM bakery items, dietary choices, opening hours, or table reservations! What can I get started for you today?`,
+      text: `☕ Welcome to Oak & Bean! I'm BeanBuddy, your coffee companion. I'd love to help you explore our specialty coffees, 5:00 AM bakery items, dietary choices, opening hours, or table reservations! What can I get started for you today?`,
       items: items || MENU_ITEMS.filter(i => i.popular).slice(0, 3)
     };
   }
@@ -1194,14 +1192,13 @@ export function processUserChatQuery(query) {
   // Fallback for any other café query
   const items = getMatchingMenuItems(q);
   return {
-    text: `☕ Welcome to Oak & Bean! I'm **BeanBuddy**, your coffee companion. Here are some of our top customer favorites:`,
+    text: `☕ Welcome to Oak & Bean! I'm BeanBuddy, your coffee companion. Here are some of our top customer favorites:`,
     items: items || MENU_ITEMS.filter(i => i.popular).slice(0, 3)
   };
 }
 
 function getItemDetailText(item) {
-  return `☕ **${item.name}** ($${item.price.toFixed(2)}):\n\n*${
-  item.description}*\n\n• **Ingredients:** ${item.ingredients.join(", ")}\n• **Allergens:** ${item.allergens.join(", ")}\n• **Prep Time:** ${item.prepTime || "2-3 mins"}\n• **Recommended Pairing:** ${item.pairingRecommendation}`;
+  return `☕ ${item.name} ($${item.price.toFixed(2)}):\n\n*${item.description}*\n\n• Ingredients: ${item.ingredients.join(", ")}\n• Allergens: ${item.allergens.join(", ")}\n• Prep Time: ${item.prepTime || "2-3 mins"}\n• Recommended Pairing: ${item.pairingRecommendation}`;
 }
 
 export function calculateCustomCoffee(config) {
@@ -1215,9 +1212,9 @@ export function calculateCustomCoffee(config) {
   if (config.boosts && config.boosts.length > 0) {
     config.boosts.forEach(bId => {
       const boostObj = EXTRA_BOOSTS.find(b => b.id === bId);
-      if (boostObj) 
+      if (boostObj)
         totalPrice += boostObj.price;
-      }
+    }
     );
   }
 
@@ -1233,8 +1230,7 @@ export function calculateCustomCoffee(config) {
     : "Mist";
 
   const generatedName = `Oak & Bean ${prefix} ${baseNamePart} ${whipPart}`;
-  const flavorDesc = `A ${sugarLevelDescription(config.sugarLevel)} brew featuring ${base.name.toLowerCase()} blended with ${milk.text.toLowerCase()}. Elevated by ${
-  syrup.flavorNote}${whip.id !== "none"
+  const flavorDesc = `A ${sugarLevelDescription(config.sugarLevel)} brew featuring ${base.name.toLowerCase()} blended with ${milk.text.toLowerCase()}. Elevated by ${syrup.flavorNote}${whip.id !== "none"
     ? ` and topped with ${whip.name.toLowerCase()}`
     : ""}.`;
 
