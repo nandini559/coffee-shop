@@ -90,7 +90,7 @@ export function CartProvider({ children }) {
     } else if (cleanCode === 'BREW20') {
       setPromoCode('BREW20');
       setDiscountPercent(20);
-      addToast('Applied 20% AI Barista discount code! ☕', 'success');
+      addToast('Applied 20% BeanBuddy discount code! ☕', 'success');
       return true;
     } else if (cleanCode === 'MORNINGCOMBO') {
       setPromoCode('MORNINGCOMBO');

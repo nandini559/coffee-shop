@@ -41,7 +41,7 @@ export default function App() {
           <Footer onOpenReservation={() => setIsReservationOpen(true)}/>{" "}
           {/* Interactive Floating Chatbot */}
           {/* <Chatbot /> */}
-          {/* Floating Action Buttons: Scroll to Top, WhatsApp & AI Chatbot */}
+          {/* Floating Action Buttons: Scroll to Top, WhatsApp & BeanBuddy Chatbot */}
           <FloatingButtons onOpenReservation={() => setIsReservationOpen(true)}/> {/* Modals & Drawers */}
           <CartDrawer/>
           <CheckoutModal/>

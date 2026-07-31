@@ -10,7 +10,7 @@ export default function Chatbot({isOpen, setIsOpen, onOpenReservation}) {
     {
       id: "welcome",
       sender: "bot",
-      text: "☕ Welcome to Oak & Bean! I am your AI Barista. Ask me anything about our coffee menu, recommendations, prices, ingredients, opening hours, store location, or table reservations!",
+      text: "☕ Welcome to Oak & Bean! I'm BeanBuddy, your coffee companion. Ask me anything about our coffee menu, recommendations, prices, ingredients, opening hours, store location, or table reservations!",
       showSuggestions: true,
       timestamp: new Date().toLocaleTimeString([], {
         hour: "2-digit",
@@ -142,14 +142,13 @@ export default function Chatbot({isOpen, setIsOpen, onOpenReservation}) {
             </div>
             <div>
               <span className="text-sm font-serif font-bold text-[#2C1A14] dark:text-white flex items-center gap-1.5">
-                Your Coffee Companion{" "}
+                BeanBuddy{" "}
                 <Sparkles className="w-3.5 h-3.5 text-[#C67C4E] dark:text-[#F0C085] animate-pulse"/>
               </span>
-              {/* <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-extrabold flex items-center gap-1"> */}
-              {/* <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Oak & Bean Assistant • Online
-                </span> */
-              }
+              <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-extrabold flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Your Coffee Companion • Online
+              </span>
             </div>
           </div>
 
@@ -207,7 +206,7 @@ export default function Chatbot({isOpen, setIsOpen, onOpenReservation}) {
           {
             isTyping && (<div className="flex items-center gap-2 text-[#5C4337] dark:text-coffee-400 italic text-xs font-semibold p-2">
               <Bot className="w-4 h-4 text-[#C67C4E] dark:text-amber-400 animate-bounce"/>
-              <span>Thinking...</span>
+              <span>BeanBuddy is thinking...</span>
             </div>)
           }
           <div ref={messagesEndRef}/>
@@ -218,7 +217,7 @@ export default function Chatbot({isOpen, setIsOpen, onOpenReservation}) {
             e.preventDefault();
             handleSendMessage();
           }} className="p-3 bg-white dark:bg-[#160F0B]/95 border-t border-[#E5DCD3] dark:border-coffee-800 flex items-center gap-2 shrink-0">
-          <input type="text" placeholder="Ask about coffee, menu, hours, location..." value={inputQuery} onChange={e => setInputQuery(e.target.value)} onKeyDown={e => {
+          <input type="text" placeholder="Ask BeanBuddy about coffee, menu, recommendations..." value={inputQuery} onChange={e => setInputQuery(e.target.value)} onKeyDown={e => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 handleSendMessage();

@@ -79,7 +79,7 @@ return (
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsChatOpen((prev) => !prev)}
-            aria-label="Open AI Barista Chatbot"
+            aria-label="Open BeanBuddy Chatbot"
             className="pointer-events-auto relative w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-tr from-[#2C1A14] via-[#5C4337] to-[#C67C4E] text-white shadow-2xl border border-amber-300/40 flex items-center justify-center group cursor-pointer"
           >
             <Bot className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform duration-300" />
